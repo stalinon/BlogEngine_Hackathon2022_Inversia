@@ -9,7 +9,7 @@ namespace BlogEngine.Service.Database.Entities;
 ///     Таблица изображений
 /// </summary>
 [Table("images")]
-internal sealed class ImageEntity : BaseEntity, IHasEntityId
+public sealed class ImageEntity : BaseEntity, IHasEntityId
 {
     /// <inheritdoc />
     [Key]

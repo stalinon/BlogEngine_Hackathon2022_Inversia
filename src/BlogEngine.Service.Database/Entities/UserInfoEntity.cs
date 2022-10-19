@@ -8,7 +8,7 @@ namespace BlogEngine.Service.Database.Entities;
 ///     Таблица информации о пользователе
 /// </summary>
 [Table("user_info")]
-internal sealed class UserInfoEntity : BaseEntity, IHasEntityId
+public sealed class UserInfoEntity : BaseEntity, IHasEntityId
 {
     /// <inheritdoc />
     [Key]

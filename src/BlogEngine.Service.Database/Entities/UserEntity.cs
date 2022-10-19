@@ -9,7 +9,7 @@ namespace BlogEngine.Service.Database.Entities;
 ///     Таблица пользователей
 /// </summary>
 [Table("users")]
-internal sealed class UserEntity : BaseEntity, IHasEntityId
+public sealed class UserEntity : BaseEntity, IHasEntityId
 {
     /// <inheritdoc />
     [Key]

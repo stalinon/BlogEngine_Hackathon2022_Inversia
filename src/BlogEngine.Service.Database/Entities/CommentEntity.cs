@@ -8,7 +8,7 @@ namespace BlogEngine.Service.Database.Entities;
 ///     Таблица комментариев
 /// </summary>
 [Table("comments")]
-internal sealed class CommentEntity : BaseEntity, IHasEntityId
+public sealed class CommentEntity : BaseEntity, IHasEntityId
 {
     /// <inheritdoc />
     [Key]

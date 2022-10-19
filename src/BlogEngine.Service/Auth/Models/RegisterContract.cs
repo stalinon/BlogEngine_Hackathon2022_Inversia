@@ -5,7 +5,38 @@
 /// </summary>
 public sealed class RegisterContract
 {
-    public int Id { get; set; }
-    public string Login { get; set; }
-    public string Password { get; set; }
+    /// <summary>
+    ///     Никнейм
+    /// </summary>
+    public string Nickname { get; set; } = default!;
+
+    /// <summary>
+    ///     Имя
+    /// </summary>
+    public string FirstName { get; set; } = default!;
+
+    /// <summary>
+    ///     Фамилия
+    /// </summary>
+    public string LastName { get; set; } = default!;
+
+    /// <summary>
+    ///     Пароль
+    /// </summary>
+    public string Password { get; set; } = default!;
+
+    /// <summary>
+    ///     Фото в Base64
+    /// </summary>
+    public string Image { get; set; } = default!;
+
+    /// <summary>
+    ///     Оригинальная ширина изображения
+    /// </summary>
+    public int Width { get; set; }
+
+    /// <summary>
+    ///     Оригинальная высота изображения
+    /// </summary>
+    public int Height { get; set; }
 }

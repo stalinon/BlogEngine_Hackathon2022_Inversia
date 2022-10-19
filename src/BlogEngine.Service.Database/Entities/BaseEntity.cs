@@ -5,7 +5,7 @@ namespace BlogEngine.Service.Database.Entities;
 /// <summary>
 ///     Базовая сущность
 /// </summary>
-internal class BaseEntity
+public class BaseEntity
 {
     /// <summary>
     ///     Дата создания записи в БД
