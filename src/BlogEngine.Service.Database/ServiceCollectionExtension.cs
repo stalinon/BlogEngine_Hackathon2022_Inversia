@@ -18,11 +18,13 @@ public static class ServiceCollectionExtension
     {
         var dbConnectionString = configuration.GetValue<string>(ConfigKeys.DB_CONNECTION_STRING, ConfigDefaults.DB_CONNECTION_STRING);
 
-        services.AddDbContext<DatabaseContext>(option => option.UseNpgsql(dbConnectionString))
-                .AddScoped<DbContext, DatabaseContext>()
-                .AddUnitOfWork<DatabaseContext>();
+        services.AddDbContext<DatabaseContext>(option 
+            => option.UseNpgsql(dbConnectionString, o => o.MigrationsHistoryTable("MIGRATIONS")), ServiceLifetime.Singleton);
+        services.AddSingleton<DbContext, DatabaseContext>();
+        services.AddUnitOfWork(ServiceLifetime.Singleton);
+        services.AddUnitOfWork<DatabaseContext>(ServiceLifetime.Singleton);
 
-        ApplyMigrations<DatabaseContext>(services.BuildServiceProvider());
+        services.BuildServiceProvider().ApplyMigrations<DatabaseContext>();
 
         return services;
     }

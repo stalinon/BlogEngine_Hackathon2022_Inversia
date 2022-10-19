@@ -7,7 +7,6 @@ namespace BlogEngine.Web.Controllers;
 /// <summary>
 ///     Контроллер авторизации
 /// </summary>
-[Route("api/auth")]
 public class AuthController : BaseController
 {
     private IAuthService _service;
@@ -19,7 +18,7 @@ public class AuthController : BaseController
     ///     Создать новый
     /// </summary>
     [HttpPost("/register")]
-    public async Task<IActionResult> RegisterAsync(RegisterContract item)
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterContract item)
     {
         var result = await _service.RegisterAsync(item, HttpContext);
         return Ok();
@@ -29,7 +28,7 @@ public class AuthController : BaseController
     ///     Создать новый
     /// </summary>
     [HttpPost("/login")]
-    public async Task<IActionResult> LoginAsync(LoginContract item)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginContract item)
     {
         var result = await _service.LoginAsync(item, HttpContext);
 

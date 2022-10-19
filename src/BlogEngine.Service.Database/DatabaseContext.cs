@@ -8,11 +8,10 @@ namespace BlogEngine.Service.Database;
 /// <summary>
 ///     Контекст базы данных
 /// </summary>
-internal sealed class DatabaseContext : DbContext
+internal class DatabaseContext : DbContext
 {
-    public DatabaseContext(DbContextOptions options) : base(options)
-    { }
-    
+    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
+
     /// <summary>
     ///     Статьи
     /// </summary>

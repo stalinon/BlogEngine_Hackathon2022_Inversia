@@ -7,7 +7,6 @@ namespace BlogEngine.Web.Controllers;
 /// <summary>
 ///     Контроллер комментариев
 /// </summary>
-[Route("api/comments")]
 public class CommentController : CRUDControllerBase<CommentContract>
 {
     /// <inheritdoc cref="CommentController"/>
@@ -18,13 +17,9 @@ public class CommentController : CRUDControllerBase<CommentContract>
     /// <summary>
     ///     Создать новый
     /// </summary>
-    [HttpPost]
-    public override async Task<IActionResult> CreateAsync(CommentContract item)
+    public override async Task<IActionResult> CreateAsync([FromBody] CommentContract item)
     {
-        if (!CheckRole(Core.Enums.UserRole.USER))
-        {
-            return Forbid();
-        }
+        CheckRole(Core.Enums.UserRole.USER);
 
         var result = await _service.CreateAsync(item);
         return Ok();
@@ -33,13 +28,9 @@ public class CommentController : CRUDControllerBase<CommentContract>
     /// <summary>
     ///     Обновить
     /// </summary>
-    [HttpPut]
-    public override async Task<IActionResult> UpdateAsync(CommentContract item)
+    public override async Task<IActionResult> UpdateAsync([FromBody] CommentContract item)
     {
-        if (!CheckRole(Core.Enums.UserRole.ADMIN))
-        {
-            return Forbid();
-        }
+        CheckRole(Core.Enums.UserRole.ADMIN);
 
         var result = await _service.UpdateAsync(item);
         return Ok();
@@ -48,13 +39,9 @@ public class CommentController : CRUDControllerBase<CommentContract>
     /// <summary>
     ///     Удалить по id
     /// </summary>
-    [HttpDelete("{id}")]
-    public override async Task<IActionResult> DeleteAsync(long id)
+    public override async Task<IActionResult> DeleteAsync([FromBody] long id)
     {
-        if (!CheckRole(Core.Enums.UserRole.ADMIN))
-        {
-            return Forbid();
-        }
+        CheckRole(Core.Enums.UserRole.ADMIN);
 
         var result = await _service.DeleteAsync(id);
         return Ok();

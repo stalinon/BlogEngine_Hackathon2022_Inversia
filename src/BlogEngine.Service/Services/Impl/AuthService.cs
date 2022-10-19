@@ -63,8 +63,8 @@ internal sealed class AuthService : IAuthService
             registerContract.Password = BCrypt.Net.BCrypt.HashPassword(registerContract.Password);
             entity = _mapper.Map<UserEntity>(registerContract);
             await repository.AddAsync(entity, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken: cancellationToken);
             await Authenticate(context, entity);
+            await _unitOfWork.SaveChangesAsync(cancellationToken: cancellationToken);
             return true;
         }
 

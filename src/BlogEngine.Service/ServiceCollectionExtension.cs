@@ -19,12 +19,15 @@ public static class ServiceCollectionExtension
     ///     Добавить сервис
     /// </summary>
     public static IServiceCollection AddService(this IServiceCollection services, IConfiguration configuration)
-        => services.AddDatabase(configuration)
-                   .AddSingleton<IAuthService, AuthService>()
-                   .AddSingleton<ICRUDService<UserContract>, UserService>()
-                   .AddSingleton<ICRUDService<CommentContract>, CommentService>()
-                   .AddSingleton<ICRUDService<ArticleContract>, ArticleService>()
-                   .AddAutoMapper(typeof(MappingProfile));
+    {
+        services.AddDatabase(configuration);
+        services.AddSingleton<IAuthService, AuthService>();
+        services.AddSingleton<ICRUDService<UserContract>, UserService>();
+        services.AddSingleton<ICRUDService<CommentContract>, CommentService>();
+        services.AddSingleton<ICRUDService<ArticleContract>, ArticleService>();
+        services.AddAutoMapper(typeof(MappingProfile));
+        return services;
+    }
 
     /// <summary>
     ///     Использовать сервис

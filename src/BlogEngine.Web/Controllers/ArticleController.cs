@@ -7,7 +7,6 @@ namespace BlogEngine.Web.Controllers;
 /// <summary>
 ///     Контроллер статей
 /// </summary>
-[Route("api/articles")]
 public class ArticleController : CRUDControllerBase<ArticleContract>
 {
     /// <inheritdoc cref="ArticleController"/>
@@ -17,13 +16,9 @@ public class ArticleController : CRUDControllerBase<ArticleContract>
     /// <summary>
     ///     Создать новый
     /// </summary>
-    [HttpPost]
-    public override async Task<IActionResult> CreateAsync(ArticleContract item)
+    public override async Task<IActionResult> CreateAsync([FromBody] ArticleContract item)
     {
-        if (!CheckRole(Core.Enums.UserRole.ADMIN))
-        {
-            return Forbid();
-        }
+        CheckRole(Core.Enums.UserRole.ADMIN);
 
         var result = await _service.CreateAsync(item);
         return Ok();
@@ -32,13 +27,9 @@ public class ArticleController : CRUDControllerBase<ArticleContract>
     /// <summary>
     ///     Обновить
     /// </summary>
-    [HttpPut]
-    public override async Task<IActionResult> UpdateAsync(ArticleContract item)
+    public override async Task<IActionResult> UpdateAsync([FromBody] ArticleContract item)
     {
-        if (!CheckRole(Core.Enums.UserRole.ADMIN))
-        {
-            return Forbid();
-        }
+        CheckRole(Core.Enums.UserRole.ADMIN);
 
         var result = await _service.UpdateAsync(item);
         return Ok();
@@ -47,13 +38,9 @@ public class ArticleController : CRUDControllerBase<ArticleContract>
     /// <summary>
     ///     Удалить по id
     /// </summary>
-    [HttpDelete("{id}")]
     public override async Task<IActionResult> DeleteAsync(long id)
     {
-        if (!CheckRole(Core.Enums.UserRole.ADMIN))
-        {
-            return Forbid();
-        }
+        CheckRole(Core.Enums.UserRole.ADMIN);
 
         var result = await _service.DeleteAsync(id);
         return Ok();

@@ -18,7 +18,7 @@ public abstract class CRUDControllerBase<T> : BaseController
     /// <summary>
     ///     Получить постранично
     /// </summary>
-    [HttpGet("/pages")]
+    [HttpGet("api/[controller]/pages")]
     public virtual async Task<IActionResult> GetPagedCollectionAsync([FromQuery] PagedCollectionRequest request)
     {
         var result = await _service.GetPagedCollectionAsync(request);
@@ -28,7 +28,7 @@ public abstract class CRUDControllerBase<T> : BaseController
     /// <summary>
     ///     Получить по id
     /// </summary>
-    [HttpGet("{id}")]
+    [HttpGet("api/[controller]/{id}")]
     public virtual async Task<IActionResult> GetByIdAsync(long id)
     {
         var result = await _service.GetByIdAsync(id);
@@ -38,7 +38,7 @@ public abstract class CRUDControllerBase<T> : BaseController
     /// <summary>
     ///     Получить все
     /// </summary>
-    [HttpGet]
+    [HttpGet("api/[controller]")]
     public virtual async Task<IActionResult> GetAllAsync()
     {
         var result = await _service.GetAllAsync();
@@ -48,8 +48,8 @@ public abstract class CRUDControllerBase<T> : BaseController
     /// <summary>
     ///     Создать новый
     /// </summary>
-    [HttpPost]
-    public virtual async Task<IActionResult> CreateAsync(T item)
+    [HttpPost("api/[controller]")]
+    public virtual async Task<IActionResult> CreateAsync([FromBody] T item)
     {
         var result = await _service.CreateAsync(item);
         return Ok();
@@ -58,8 +58,8 @@ public abstract class CRUDControllerBase<T> : BaseController
     /// <summary>
     ///     Обновить
     /// </summary>
-    [HttpPut]
-    public virtual async Task<IActionResult> UpdateAsync(T item)
+    [HttpPut("api/[controller]")]
+    public virtual async Task<IActionResult> UpdateAsync([FromBody] T item)
     {
         var result = await _service.UpdateAsync(item);
         return Ok();
@@ -68,7 +68,7 @@ public abstract class CRUDControllerBase<T> : BaseController
     /// <summary>
     ///     Удалить по id
     /// </summary>
-    [HttpDelete("{id}")]
+    [HttpDelete("api/[controller]/{id}")]
     public virtual async Task<IActionResult> DeleteAsync(long id)
     {
         var result = await _service.DeleteAsync(id);

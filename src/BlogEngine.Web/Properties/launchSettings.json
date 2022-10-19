@@ -1,13 +1,4 @@
 ﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:52332",
-      "sslPort": 0
-    }
-  },
   "profiles": {
     "BlogEngine.Web": {
       "commandName": "Project",
@@ -16,15 +7,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5238",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT" : "Development",
+        "DB_CONNECTION_STRING" : "Server=127.0.0.1;User Id=postgres;Port=35432;Database=__engine;Password=1234;Include Error Detail=true;Pooling=false;Timeout=1024;Command Timeout=1024;"
       }
     }
   }

@@ -8,7 +8,7 @@ namespace BlogEngine.Service.Database.Entities;
 /// <summary>
 ///     Таблица изображений
 /// </summary>
-[Table("images")]
+[Table("image_strings")]
 public sealed class ImageEntity : BaseEntity, IHasEntityId
 {
     /// <inheritdoc />
