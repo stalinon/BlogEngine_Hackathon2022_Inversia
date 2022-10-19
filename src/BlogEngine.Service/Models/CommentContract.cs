@@ -8,6 +8,12 @@ namespace BlogEngine.Service.Models;
 public sealed class CommentContract : BaseContract
 {
     /// <summary>
+    ///     Идентификатор статьи
+    /// </summary>
+    [JsonPropertyName("article_id")]
+    public long ArticleId { get; set; }
+
+    /// <summary>
     ///     Текст комментария
     /// </summary>
     [JsonPropertyName("text")]

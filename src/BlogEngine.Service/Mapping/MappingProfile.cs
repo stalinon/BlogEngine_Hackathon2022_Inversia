@@ -40,6 +40,7 @@ internal class MappingProfile : Profile
             .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
             .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
             .ForMember(d => d.Updated, s => s.MapFrom(m => m.Updated))
+            .ForMember(d => d.ArticleId, s => s.MapFrom(m => m.ArticleId))
             .ForMember(d => d.UserInfo.Nickname, s => s.MapFrom(m => m.Author.Nickname))
             .ForMember(d => d.UserInfo.FirstName, s => s.MapFrom(m => m.Author.FirstName))
             .ForMember(d => d.UserInfo.LastName, s => s.MapFrom(m => m.Author.LastName))
