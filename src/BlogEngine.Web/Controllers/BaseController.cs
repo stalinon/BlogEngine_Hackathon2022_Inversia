@@ -1,12 +1,13 @@
 ﻿using BlogEngine.Core.Enums;
 using BlogEngine.Core.Helpers;
-using BlogEngine.Service.Auth.Models;
+using BlogEngine.Service.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace BlogEngine.Web.Controllers;
 
+/// <inheritdoc cref="Controller"/>
 public abstract class BaseController : Controller
 {
     /// <summary>

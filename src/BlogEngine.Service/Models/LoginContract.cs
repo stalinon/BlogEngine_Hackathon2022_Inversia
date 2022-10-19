@@ -1,4 +1,4 @@
-﻿namespace BlogEngine.Service.Auth.Models;
+﻿namespace BlogEngine.Service.Models;
 
 /// <summary>
 ///     Вход пользователя

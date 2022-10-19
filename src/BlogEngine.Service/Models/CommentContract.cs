@@ -17,5 +17,5 @@ public sealed class CommentContract : BaseContract
     ///     Информация о пользователе
     /// </summary>
     [JsonPropertyName("user")]
-    public UserContract User { get; set; } = default!;
+    public UserContract Author { get; set; } = default!;
 }

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using BlogEngine.Service.Auth.Models;
+using BlogEngine.Service.Models;
 using BlogEngine.Service.Database.Entities;
 using EntityFrameworkCore.UnitOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlogEngine.Service.Auth.Services.Impl;
+namespace BlogEngine.Service.Services.Impl;
 
 /// <inheritdoc cref="IAuthService"/>
 internal sealed class AuthService : IAuthService

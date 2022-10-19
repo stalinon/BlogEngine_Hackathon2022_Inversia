@@ -1,6 +1,6 @@
-﻿using BlogEngine.Service.Auth.Models;
+﻿using BlogEngine.Service.Models;
 
-namespace BlogEngine.Service.Auth.Services;
+namespace BlogEngine.Service.Services;
 
 /// <summary>
 ///     Авторизация

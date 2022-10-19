@@ -14,13 +14,36 @@ public static class ServiceCollectionExtension
     /// <summary>
     ///     Добавить поддержку БД
     /// </summary>
-    public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        var dbConnectionString = configuration.GetValue<string>(ConfigKeys.DB_CONNECTION_STRING);
+        var dbConnectionString = configuration.GetValue<string>(ConfigKeys.DB_CONNECTION_STRING, ConfigDefaults.DB_CONNECTION_STRING);
 
-        services.AddDbContext<DatabaseContext>(option => option.UseNpgsql(dbConnectionString));
-        services.AddScoped<DbContext, DatabaseContext>();
-        services.AddUnitOfWork<DatabaseContext>();
+        services.AddDbContext<DatabaseContext>(option => option.UseNpgsql(dbConnectionString))
+                .AddScoped<DbContext, DatabaseContext>()
+                .AddUnitOfWork<DatabaseContext>();
+
+        ApplyMigrations<DatabaseContext>(services.BuildServiceProvider());
+
+        return services;
+    }
+
+    /// <summary>
+    ///     Применяет миграции
+    /// </summary>
+    public static void ApplyMigrations<T>(this IServiceProvider serviceProvider) where T : DbContext
+    {
+        try
+        {
+            using var scope = serviceProvider.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<T>();
+
+            db.Database.SetCommandTimeout(TimeSpan.FromDays(2));
+            db.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error applying database migrations", ex);
+        }
     }
 
 }

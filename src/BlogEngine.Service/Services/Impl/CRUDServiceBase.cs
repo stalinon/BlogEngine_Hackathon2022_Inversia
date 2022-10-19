@@ -6,7 +6,7 @@ using EntityFrameworkCore.QueryBuilder.Interfaces;
 using EntityFrameworkCore.Repository.Interfaces;
 using EntityFrameworkCore.UnitOfWork.Interfaces;
 
-namespace BlogEngine.Service.CRUD.Impl;
+namespace BlogEngine.Service.Services.Impl;
 
 /// <inheritdoc cref="ICRUDService{TContract}"/>
 public abstract class CRUDServiceBase<TContract, TEntity> : ICRUDService<TContract>
@@ -70,7 +70,7 @@ public abstract class CRUDServiceBase<TContract, TEntity> : ICRUDService<TContra
     public async Task<PagedCollectionContract<TContract>> GetPagedCollectionAsync(PagedCollectionRequest request)
     {
         using var repository = _unitOfWork.Repository<TEntity>();
-        var query = MultipleResultQuery(repository).Page(request.Page, request.Capacity);
+        var query = ((IMultipleResultQuery<TEntity>)MultipleResultQuery(repository)).Page(request.Page, request.Capacity);
         var entities = await repository.SearchAsync(query);
         return new PagedCollectionContract<TContract>
         {
@@ -100,10 +100,10 @@ public abstract class CRUDServiceBase<TContract, TEntity> : ICRUDService<TContra
     /// <summary>
     ///     Одиночный запрос 
     /// </summary>
-    protected abstract ISingleResultQuery<TEntity> SingleResultQuery(IRepository<TEntity> repository);
+    protected abstract IQuery<TEntity> SingleResultQuery(IRepository<TEntity> repository);
 
     /// <summary>
     ///     Одиночный запрос 
     /// </summary>
-    protected abstract IMultipleResultQuery<TEntity> MultipleResultQuery(IRepository<TEntity> repository);
+    protected abstract IQuery<TEntity> MultipleResultQuery(IRepository<TEntity> repository);
 }

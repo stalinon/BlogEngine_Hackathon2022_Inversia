@@ -8,7 +8,7 @@ namespace BlogEngine.Service.Middlewares;
 /// <summary>
 ///     Обработка ошибок
 /// </summary>
-public class ErrorHandlerMiddleware
+internal class ErrorHandlerMiddleware
 {
     private readonly RequestDelegate _next;
 

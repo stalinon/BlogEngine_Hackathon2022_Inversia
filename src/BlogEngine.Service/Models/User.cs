@@ -1,6 +1,6 @@
 ﻿using BlogEngine.Core.Enums;
 
-namespace BlogEngine.Service.Auth.Models;
+namespace BlogEngine.Service.Models;
 
 /// <summary>
 ///     Аккаунт пользователя

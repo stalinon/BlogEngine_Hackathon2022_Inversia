@@ -1,6 +1,6 @@
 ﻿using BlogEngine.Service.Models;
 
-namespace BlogEngine.Service.CRUD;
+namespace BlogEngine.Service.Services;
 
 /// <summary>
 ///     CRUD-сервис
