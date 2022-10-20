@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using BlogEngine.Service.Exceptions;
 
 namespace BlogEngine.Service.Services.Impl;
 
@@ -71,11 +72,44 @@ internal sealed class AuthService : IAuthService
         return false;
     }
 
+    /// <inheritdoc />
+    public async Task<bool> ExitAsync(HttpContext context, CancellationToken cancellationToken = default) 
+    {
+        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return true;
+    }
+
+    /// <inheritdoc />
+    public async Task<UserContract> GetMeAsync(HttpContext context, CancellationToken cancellationToken = default)
+    {
+        if (!context.User.Claims.Any())
+        {
+            throw new AppException("Not authorized", System.Net.HttpStatusCode.Unauthorized);
+        }
+
+        var nickname = context.User.Claims.First(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
+        using var repository = _unitOfWork.Repository<UserEntity>();
+
+        var query = repository
+            .SingleResultQuery()
+            .Include(s => s.Include(q => q.UserInfo))
+            .AndFilter(u => u.UserInfo.Nickname == nickname);
+
+        var entity = await repository.FirstOrDefaultAsync(query, cancellationToken);
+
+        if (entity == null)
+        {
+            throw new AppException("Account not found", System.Net.HttpStatusCode.NotFound);
+        }
+
+        return _mapper.Map<UserContract>(entity);
+    }
+
     private static async Task Authenticate(HttpContext context, UserEntity entity)
     {
         var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, entity.UserInfo.Nickname.ToString()),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, entity.UserInfo.Nickname),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, entity.Role.ToString()),
             };
 

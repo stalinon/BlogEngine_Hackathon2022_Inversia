@@ -1,4 +1,6 @@
-﻿using BlogEngine.Service.Models;
+﻿using BlogEngine.Core.Enums;
+using BlogEngine.Service.Attributes;
+using BlogEngine.Service.Models;
 using BlogEngine.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,14 +15,12 @@ public class CommentController : CRUDControllerBase<CommentContract>
     public CommentController(ICRUDService<CommentContract> service) : base(service)
     { }
 
-
     /// <summary>
     ///     Создать новый
     /// </summary>
+    [Allowed(UserRole.USER)]
     public override async Task<IActionResult> CreateAsync([FromBody] CommentContract item)
     {
-        CheckRole(Core.Enums.UserRole.USER);
-
         var result = await _service.CreateAsync(item);
         return Ok();
     }
@@ -28,10 +28,9 @@ public class CommentController : CRUDControllerBase<CommentContract>
     /// <summary>
     ///     Обновить
     /// </summary>
+    [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> UpdateAsync([FromBody] CommentContract item)
     {
-        CheckRole(Core.Enums.UserRole.ADMIN);
-
         var result = await _service.UpdateAsync(item);
         return Ok();
     }
@@ -39,10 +38,9 @@ public class CommentController : CRUDControllerBase<CommentContract>
     /// <summary>
     ///     Удалить по id
     /// </summary>
+    [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> DeleteAsync([FromBody] long id)
     {
-        CheckRole(Core.Enums.UserRole.ADMIN);
-
         var result = await _service.DeleteAsync(id);
         return Ok();
     }

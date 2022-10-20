@@ -31,7 +31,26 @@ public class AuthController : BaseController
     public async Task<IActionResult> LoginAsync([FromBody] LoginContract item)
     {
         var result = await _service.LoginAsync(item, HttpContext);
-
         return Ok();
+    }
+
+    /// <summary>
+    ///     Выйти
+    /// </summary>
+    [HttpPost("/exit")]
+    public async Task<IActionResult> ExitAsync()
+    {
+        var result = await _service.ExitAsync(HttpContext);
+        return Ok();
+    }
+
+    /// <summary>
+    ///     Создать новый
+    /// </summary>
+    [HttpGet("/me")]
+    public async Task<IActionResult> MeAsync()
+    {
+        var result = await _service.GetMeAsync(HttpContext);
+        return Ok(result);
     }
 }

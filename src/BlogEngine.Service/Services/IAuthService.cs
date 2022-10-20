@@ -17,4 +17,14 @@ public interface IAuthService
     ///     Залогиниться
     /// </summary>
     public Task<bool> LoginAsync(LoginContract loginContract, HttpContext context, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Выйти
+    /// </summary>
+    public Task<bool> ExitAsync(HttpContext context, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Получить мой аккаунт
+    /// </summary>
+    public Task<UserContract> GetMeAsync(HttpContext context, CancellationToken cancellationToken = default);
 }
