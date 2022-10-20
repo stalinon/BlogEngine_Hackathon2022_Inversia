@@ -1,5 +1,8 @@
 ﻿using BlogEngine.Core;
+using BlogEngine.Core.Enums;
+using BlogEngine.Service.Database.Entities;
 using EntityFrameworkCore.UnitOfWork.Extensions;
+using EntityFrameworkCore.UnitOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,20 +27,18 @@ public static class ServiceCollectionExtension
         services.AddUnitOfWork(ServiceLifetime.Singleton);
         services.AddUnitOfWork<DatabaseContext>(ServiceLifetime.Singleton);
 
-        services.BuildServiceProvider().ApplyMigrations<DatabaseContext>();
-
         return services;
     }
 
     /// <summary>
     ///     Применяет миграции
     /// </summary>
-    public static void ApplyMigrations<T>(this IServiceProvider serviceProvider) where T : DbContext
+    public static void ApplyMigrations(this IServiceProvider serviceProvider)
     {
         try
         {
             using var scope = serviceProvider.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<T>();
+            var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
             db.Database.SetCommandTimeout(TimeSpan.FromDays(2));
             db.Database.Migrate();
@@ -48,4 +49,46 @@ public static class ServiceCollectionExtension
         }
     }
 
+    /// <summary>
+    ///     Создать аккаунт администратора
+    /// </summary>
+    public static IServiceProvider CreateAdmin(this IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var uof = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        var users = uof.Repository<UserEntity>();
+
+        if (!users.Any())
+        {
+            var login = Environment.GetEnvironmentVariable(ConfigKeys.ADMIN_LOGIN) ?? ConfigDefaults.ADMIN_LOGIN;
+            var password = BCrypt.Net.BCrypt.HashPassword(Environment.GetEnvironmentVariable(ConfigKeys.ADMIN_PWD) ?? ConfigDefaults.ADMIN_PWD);
+            var admin = Create(login, password);
+
+            users.Add(admin);
+            uof.SaveChanges();
+        }
+
+        return serviceProvider;
+
+        static UserEntity Create(string login, string password)
+        {
+            var adminInfo = new UserInfoEntity()
+            {
+                Id = 1,
+                Nickname = login,
+                FirstName = login,
+                LastName = login,
+            };
+
+            var admin = new UserEntity
+            {
+                Id = 1,
+                Role = UserRole.ADMIN,
+                PasswordHash = password,
+                UserInfo = adminInfo
+            };
+            return admin;
+        }
+    }
 }

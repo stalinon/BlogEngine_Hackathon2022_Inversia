@@ -27,7 +27,7 @@ internal class MappingProfile : Profile
         CreateMap<UserContract, UserEntity>()
             .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
             .ForMember(d => d.PasswordHash, s => s.Ignore())
-            .ForMember(d => d.Role, s => s.MapFrom(m => UserRole.USER))
+            .ForMember(d => d.Role, s => s.MapFrom(m => m.Role))
             .ForPath(d => d.UserInfo.Nickname, s => s.MapFrom(m => m.Nickname))
             .ForPath(d => d.UserInfo.FirstName, s => s.MapFrom(m => m.FirstName))
             .ForPath(d => d.UserInfo.LastName, s => s.MapFrom(m => m.LastName))

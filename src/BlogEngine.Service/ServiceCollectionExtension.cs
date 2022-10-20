@@ -32,6 +32,12 @@ public static class ServiceCollectionExtension
     /// <summary>
     ///     Использовать сервис
     /// </summary>
-    public static IApplicationBuilder UseService(this IApplicationBuilder builder)
-        => builder.UseMiddleware<ErrorHandlerMiddleware>();
+    public static IApplicationBuilder UseService(this IApplicationBuilder builder, IServiceProvider provider)
+    {
+        builder.UseMiddleware<ErrorHandlerMiddleware>();
+        provider.ApplyMigrations();
+        provider.CreateAdmin();
+
+        return builder;
+    }
 }

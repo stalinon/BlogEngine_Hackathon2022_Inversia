@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BlogEngine.Core;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -38,18 +39,18 @@ public sealed class UserInfoEntity : BaseEntity, IHasEntityId
     /// </summary>
     [Column("image_id")]
     [ForeignKey(nameof(Image))]
-    public long ImageId { get; set; }
+    public long? ImageId { get; set; }
 
     /// <summary>
     ///     Изображение профиля
     /// </summary>
-    public ImageEntity Image { get; set; } = default!;
+    public ImageEntity? Image { get; set; } = default!;
 
     /// <summary>
     ///     Инициализация свойств таблицы
     /// </summary>
     public static void Setup(ModelBuilder modelBuilder)
-    { 
+    {
         modelBuilder.Entity<UserInfoEntity>().HasIndex(e => e.Nickname).HasDatabaseName("IX_user_info_nickname").IsUnique();
         modelBuilder.Entity<UserInfoEntity>().HasIndex(e => e.FirstName).HasDatabaseName("IX_user_info_first_name");
         modelBuilder.Entity<UserInfoEntity>().HasIndex(e => e.LastName).HasDatabaseName("IX_user_info_last_name");

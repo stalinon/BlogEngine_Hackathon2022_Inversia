@@ -8,7 +8,9 @@
       "applicationUrl": "http://localhost:5238",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT" : "Development",
-        "DB_CONNECTION_STRING" : "Server=127.0.0.1;User Id=postgres;Port=35432;Database=__engine;Password=1234;Include Error Detail=true;Pooling=false;Timeout=1024;Command Timeout=1024;"
+        "DB_CONNECTION_STRING": "Server=127.0.0.1;User Id=postgres;Port=35432;Database=__engine;Password=1234;Include Error Detail=true;Pooling=false;Timeout=1024;Command Timeout=1024;",
+        "ADMIN_LOGIN" : "admin",
+        "ADMIN_PWD" : "1234"
       }
     }
   }

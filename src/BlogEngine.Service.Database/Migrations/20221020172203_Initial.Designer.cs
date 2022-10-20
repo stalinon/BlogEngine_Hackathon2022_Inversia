@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogEngine.Service.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221019225119_Init_Migration")]
-    partial class Init_Migration
+    [Migration("20221020172203_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -208,7 +208,7 @@ namespace BlogEngine.Service.Database.Migrations
                         .HasColumnType("text")
                         .HasColumnName("first_name");
 
-                    b.Property<long>("ImageId")
+                    b.Property<long?>("ImageId")
                         .HasColumnType("bigint")
                         .HasColumnName("image_id");
 
@@ -295,9 +295,7 @@ namespace BlogEngine.Service.Database.Migrations
                 {
                     b.HasOne("BlogEngine.Service.Database.Entities.ImageEntity", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.Navigation("Image");
                 });

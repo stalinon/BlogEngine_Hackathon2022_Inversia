@@ -6,8 +6,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BlogEngine.Service.Database.Migrations
 {
-    public partial class Init_Migration : Migration
+    /// <summary>
+    ///     Создание БД
+    /// </summary>
+    public partial class Initial : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -36,7 +40,7 @@ namespace BlogEngine.Service.Database.Migrations
                     nickname = table.Column<string>(type: "text", nullable: false),
                     first_name = table.Column<string>(type: "text", nullable: false),
                     last_name = table.Column<string>(type: "text", nullable: false),
-                    image_id = table.Column<long>(type: "bigint", nullable: false),
+                    image_id = table.Column<long>(type: "bigint", nullable: true),
                     created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -47,8 +51,7 @@ namespace BlogEngine.Service.Database.Migrations
                         name: "FK_user_info_image_strings_image_id",
                         column: x => x.image_id,
                         principalTable: "image_strings",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -182,6 +185,7 @@ namespace BlogEngine.Service.Database.Migrations
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

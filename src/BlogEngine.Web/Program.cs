@@ -23,7 +23,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseService();
+app.UseService(app.Services);
 
 app.MapControllers();
 

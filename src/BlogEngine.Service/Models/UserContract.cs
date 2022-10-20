@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using BlogEngine.Core.Enums;
+using System.Text.Json.Serialization;
 
 namespace BlogEngine.Service.Models;
 
@@ -7,6 +8,12 @@ namespace BlogEngine.Service.Models;
 /// </summary>
 public sealed class UserContract : BaseContract
 {
+    /// <summary>
+    ///     Роль
+    /// </summary>
+    [JsonPropertyName("role")]
+    public UserRole Role { get; set; }
+
     /// <summary>
     ///     Никнейм пользователя
     /// </summary>
@@ -29,5 +36,5 @@ public sealed class UserContract : BaseContract
     ///     Изображение профиля
     /// </summary>
     [JsonPropertyName("image")]
-    public string Image { get; set; } = default!;
+    public string? Image { get; set; }
 }

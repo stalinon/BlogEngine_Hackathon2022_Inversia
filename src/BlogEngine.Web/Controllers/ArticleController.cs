@@ -20,28 +20,19 @@ public class ArticleController : CRUDControllerBase<ArticleContract>
     /// </summary>
     [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> CreateAsync([FromBody] ArticleContract item)
-    {
-        var result = await _service.CreateAsync(item);
-        return Ok();
-    }
+        => await base.CreateAsync(item);
 
     /// <summary>
     ///     Обновить
     /// </summary>
     [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> UpdateAsync([FromBody] ArticleContract item)
-    {
-        var result = await _service.UpdateAsync(item);
-        return Ok();
-    }
+        => await base.UpdateAsync(item);
 
     /// <summary>
     ///     Удалить по id
     /// </summary>
     [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> DeleteAsync(long id)
-    {
-        var result = await _service.DeleteAsync(id);
-        return Ok();
-    }
+        => await base.DeleteAsync(id);
 }

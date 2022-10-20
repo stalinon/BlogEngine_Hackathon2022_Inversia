@@ -19,59 +19,41 @@ public sealed class UserController : CRUDControllerBase<UserContract>
     ///     Получить постранично
     /// </summary>
     [Allowed(UserRole.ADMIN)]
-    public override async Task<IActionResult> GetPagedCollectionAsync([FromQuery] PagedCollectionRequest request)
-    {
-        var result = await _service.GetPagedCollectionAsync(request);
-        return Ok(result);
-    }
+    public override async Task<IActionResult> GetPagedCollectionAsync([FromQuery] PagedCollectionRequest request) 
+        => await base.GetPagedCollectionAsync(request);
 
     /// <summary>
     ///     Получить по id
     /// </summary>
     [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> GetByIdAsync(long id)
-    {
-        var result = await _service.GetByIdAsync(id);
-        return Ok(result);
-    }
+        => await base.GetByIdAsync(id);
 
     /// <summary>
     ///     Получить все
     /// </summary>
     [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> GetAllAsync()
-    {
-        var result = await _service.GetAllAsync();
-        return Ok(result);
-    }
+        => await base.GetAllAsync();
 
     /// <summary>
     ///     Создать новый
     /// </summary>
     [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> CreateAsync([FromBody] UserContract item)
-    {
-        var result = await _service.CreateAsync(item);
-        return Ok();
-    }
+        => await base.CreateAsync(item);
 
     /// <summary>
     ///     Обновить
     /// </summary>
     [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> UpdateAsync([FromBody] UserContract item)
-    {
-        var result = await _service.UpdateAsync(item);
-        return Ok();
-    }
+        => await base.UpdateAsync(item);
 
     /// <summary>
     ///     Удалить по id
     /// </summary>
     [Allowed(UserRole.ADMIN)]
     public override async Task<IActionResult> DeleteAsync(long id)
-    {
-        var result = await _service.DeleteAsync(id);
-        return Ok();
-    }
+        => await base.DeleteAsync(id);
 }

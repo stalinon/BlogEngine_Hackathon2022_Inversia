@@ -1,4 +1,5 @@
-﻿using BlogEngine.Core.Enums;
+﻿using BlogEngine.Core;
+using BlogEngine.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

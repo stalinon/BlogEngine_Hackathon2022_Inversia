@@ -31,7 +31,7 @@ public class AuthController : BaseController
     public async Task<IActionResult> LoginAsync([FromBody] LoginContract item)
     {
         var result = await _service.LoginAsync(item, HttpContext);
-        return Ok();
+        return result ? Ok() : Unauthorized();
     }
 
     /// <summary>

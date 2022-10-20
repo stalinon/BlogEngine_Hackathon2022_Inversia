@@ -1,4 +1,6 @@
-﻿using BlogEngine.Service.Database.Entities;
+﻿using BCrypt.Net;
+using BlogEngine.Core;
+using BlogEngine.Service.Database.Entities;
 using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -74,14 +76,12 @@ internal class DatabaseContext : DbContext
     /// <inheritdoc/>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        UserEntity.Setup(modelBuilder);
         ArticleEntity.Setup(modelBuilder);
         CommentEntity.Setup(modelBuilder);
         ImageEntity.Setup(modelBuilder);
         UserInfoEntity.Setup(modelBuilder);
+        UserEntity.Setup(modelBuilder);
     }
-
-
 
     #endregion
 
