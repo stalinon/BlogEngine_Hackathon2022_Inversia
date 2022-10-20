@@ -38,5 +38,5 @@ public sealed class ArticleContract : BaseContract
     /// <summary>
     ///     Комментарии к статье
     /// </summary>
-    public CommentContract[] Comments { get; set; } = Array.Empty<CommentContract>();
+    public CommentContract[]? Comments { get; set; }
 }

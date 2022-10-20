@@ -17,7 +17,7 @@ public class AuthController : BaseController
     /// <summary>
     ///     Создать новый
     /// </summary>
-    [HttpPost("/register")]
+    [HttpPost("api/register")]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterContract item)
     {
         var result = await _service.RegisterAsync(item, HttpContext);
@@ -27,7 +27,7 @@ public class AuthController : BaseController
     /// <summary>
     ///     Создать новый
     /// </summary>
-    [HttpPost("/login")]
+    [HttpPost("api/login")]
     public async Task<IActionResult> LoginAsync([FromBody] LoginContract item)
     {
         var result = await _service.LoginAsync(item, HttpContext);
@@ -37,7 +37,7 @@ public class AuthController : BaseController
     /// <summary>
     ///     Выйти
     /// </summary>
-    [HttpPost("/exit")]
+    [HttpPost("api/exit")]
     public async Task<IActionResult> ExitAsync()
     {
         var result = await _service.ExitAsync(HttpContext);
@@ -47,7 +47,7 @@ public class AuthController : BaseController
     /// <summary>
     ///     Создать новый
     /// </summary>
-    [HttpGet("/me")]
+    [HttpGet("api/me")]
     public async Task<IActionResult> MeAsync()
     {
         var result = await _service.GetMeAsync(HttpContext);
