@@ -9,6 +9,7 @@ import { Button } from "@consta/uikit/__internal__/src/components/Button/Button"
 export function LoginModal(props) {
   const [login, setLogin] = useState(null);
   const [password, setPassword] = useState(null);
+
   return (
     <Modal
       isOpen={props.isOpen}
@@ -28,8 +29,8 @@ export function LoginModal(props) {
           </Text>
           <Layout>
             <TextField
-              onChange={({ value }) => setPassword(value)}
-              value={password}
+              onChange={({ value }) => setLogin(value)}
+              value={login}
               type="text"
               placeholder="Введите логин"
               label="Логин"
@@ -40,8 +41,8 @@ export function LoginModal(props) {
           <div>&nbsp;</div>
           <Layout>
             <TextField
-              onChange={({ value }) => setLogin(value)}
-              value={login}
+              onChange={({ value }) => setPassword(value)}
+              value={password}
               type="password"
               placeholder="Введите пароль"
               label="Пароль"
@@ -57,8 +58,8 @@ export function LoginModal(props) {
             form="round"
             label="Войти"
             onClick={() => {
-              var item = { login: login, password: password };
-              Auth.login(item);
+              var item = { nickname: login, password: password };
+              Auth.login(item).then((res) => Auth.me());
               props.onClickOutside();
             }}
           />

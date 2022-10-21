@@ -8,6 +8,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using BlogEngine.Service.Exceptions;
+using Microsoft.IdentityModel.Tokens;
+using BlogEngine.Service.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace BlogEngine.Service.Services.Impl;
 
@@ -27,7 +30,7 @@ internal sealed class AuthService : IAuthService
     }
 
     /// <inheritdoc />
-    public async Task<bool> LoginAsync(LoginContract loginContract, HttpContext context, CancellationToken cancellationToken = default)
+    public async Task<string?> LoginAsync(LoginContract loginContract, HttpContext context, CancellationToken cancellationToken = default)
     {
         using var repository = _unitOfWork.Repository<UserEntity>();
 
@@ -38,13 +41,7 @@ internal sealed class AuthService : IAuthService
 
         var entity = await repository.FirstOrDefaultAsync(query, cancellationToken);
 
-        if (entity != null && BCrypt.Net.BCrypt.Verify(loginContract.Password, entity.PasswordHash))
-        {
-            await Authenticate(context, entity);
-            return true;
-        }
-
-        return false;
+        return entity != null && BCrypt.Net.BCrypt.Verify(loginContract.Password, entity.PasswordHash) ? Authenticate(entity) : null;
     }
 
     /// <inheritdoc />
@@ -64,7 +61,6 @@ internal sealed class AuthService : IAuthService
             registerContract.Password = BCrypt.Net.BCrypt.HashPassword(registerContract.Password);
             entity = _mapper.Map<UserEntity>(registerContract);
             await repository.AddAsync(entity, cancellationToken);
-            await Authenticate(context, entity);
             await _unitOfWork.SaveChangesAsync(cancellationToken: cancellationToken);
             return true;
         }
@@ -75,19 +71,20 @@ internal sealed class AuthService : IAuthService
     /// <inheritdoc />
     public async Task<bool> ExitAsync(HttpContext context, CancellationToken cancellationToken = default) 
     {
-        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return true;
     }
 
     /// <inheritdoc />
     public async Task<UserContract> GetMeAsync(HttpContext context, CancellationToken cancellationToken = default)
     {
-        if (!context.User.Claims.Any())
+        if (!context.Request.Headers.TryGetValue("Authorization", out var auth))
         {
             throw new AppException("Not authorized", System.Net.HttpStatusCode.Unauthorized);
         }
 
-        var nickname = context.User.Claims.First(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
+        var token = new JwtSecurityTokenHandler().ReadJwtToken(auth.FirstOrDefault(x => x.StartsWith("Bearer"))?.Replace("Bearer ", ""));
+        
+        var nickname = token.Claims.First(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
         using var repository = _unitOfWork.Repository<UserEntity>();
 
         var query = repository
@@ -97,23 +94,26 @@ internal sealed class AuthService : IAuthService
 
         var entity = await repository.FirstOrDefaultAsync(query, cancellationToken);
 
-        if (entity == null)
-        {
-            throw new AppException("Account not found", System.Net.HttpStatusCode.NotFound);
-        }
-
-        return _mapper.Map<UserContract>(entity);
+        return entity == null
+            ? throw new AppException("Account not found", System.Net.HttpStatusCode.NotFound)
+            : _mapper.Map<UserContract>(entity);
     }
 
-    private static async Task Authenticate(HttpContext context, UserEntity entity)
+    private static string Authenticate(UserEntity entity)
     {
         var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, entity.UserInfo.Nickname),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, entity.Role.ToString()),
-            };
+        {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, entity.UserInfo.Nickname),
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, entity.Role.ToString()),
+        };
 
-        var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-        await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        var jwt = new JwtSecurityToken(
+            issuer: AuthOptions.ISSUER,
+            audience: AuthOptions.AUDIENCE,
+            claims: claims,
+            expires: DateTime.UtcNow.Add(TimeSpan.FromDays(1)),
+            signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
     }
 }

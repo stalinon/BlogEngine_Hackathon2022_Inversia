@@ -101,21 +101,21 @@ export class User {
 export class Auth {
   static async register(item) {
     var url = `${apiBase}register`;
-    return await axios.post(url, item).then((res) => console.log(res.data));
+    return await axios.post(url, item).then((res) => console.log(res));
   }
 
   static async login(item) {
     var url = `${apiBase}login`;
-    return await axios.post(url, item).then((res) => console.log(res.data));
+    return await axios.post(url, item).then((res) => console.log(res));
   }
 
   static async exit() {
     var url = `${apiBase}exit`;
-    return await axios.post(url).then((res) => console.log(res.data));
+    return await axios.post(url).then((res) => console.log(res));
   }
 
   static async me() {
     var url = `${apiBase}me`;
-    return await axios.get(url).then((res) => console.log(res.data));
+    return await axios.get(url).then((res) => console.log(res));
   }
 }

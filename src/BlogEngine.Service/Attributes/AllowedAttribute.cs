@@ -2,6 +2,7 @@
 using BlogEngine.Core.Helpers;
 using BlogEngine.Service.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace BlogEngine.Service.Attributes;
@@ -29,8 +30,14 @@ public class AllowedAttribute : Attribute, IAuthorizationFilter
         : throw new AppException("Forbidden", System.Net.HttpStatusCode.Forbidden);
     public void OnAuthorization(AuthorizationFilterContext context) 
     {
-        var claim = context.HttpContext.User.Claims?
-                            .FirstOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType);
+        if (!context.HttpContext.Request.Headers.TryGetValue("Authorization", out var auth))
+        {
+            throw new AppException("Not authorized", System.Net.HttpStatusCode.Unauthorized);
+        }
+
+        var token = new JwtSecurityTokenHandler().ReadJwtToken(auth.FirstOrDefault(x => x.StartsWith("Bearer"))?.Replace("Bearer ", ""));
+        var claim = token.Claims?
+                            .FirstOrDefault(x => x.Type == ClaimsIdentity.DefaultRoleClaimType);
         var role = EnumMapper.MapUserRole(claim?.Value);
 
         IsAllowed(role);

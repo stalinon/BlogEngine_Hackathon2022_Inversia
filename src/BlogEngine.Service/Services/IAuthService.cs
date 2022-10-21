@@ -16,7 +16,7 @@ public interface IAuthService
     /// <summary>
     ///     Залогиниться
     /// </summary>
-    public Task<bool> LoginAsync(LoginContract loginContract, HttpContext context, CancellationToken cancellationToken = default);
+    public Task<string?> LoginAsync(LoginContract loginContract, HttpContext context, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Выйти

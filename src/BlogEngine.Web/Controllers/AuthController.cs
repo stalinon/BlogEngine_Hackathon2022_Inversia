@@ -25,13 +25,13 @@ public class AuthController : BaseController
     }
 
     /// <summary>
-    ///     Создать новый
+    ///     Залогиниться
     /// </summary>
     [HttpPost("api/login")]
     public async Task<IActionResult> LoginAsync([FromBody] LoginContract item)
     {
         var result = await _service.LoginAsync(item, HttpContext);
-        return result ? Ok() : Unauthorized();
+        return result != null ? Ok(result) : Unauthorized();
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ public class AuthController : BaseController
     }
 
     /// <summary>
-    ///     Создать новый
+    ///     Получить себя
     /// </summary>
     [HttpGet("api/me")]
     public async Task<IActionResult> MeAsync()
