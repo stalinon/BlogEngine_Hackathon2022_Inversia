@@ -5,6 +5,7 @@ using EntityFrameworkCore.QueryBuilder.Interfaces;
 using EntityFrameworkCore.Repository.Interfaces;
 using EntityFrameworkCore.UnitOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogEngine.Service.Services.Impl;
 
@@ -14,7 +15,7 @@ namespace BlogEngine.Service.Services.Impl;
 internal class ArticleService : CRUDServiceBase<ArticleContract, ArticleEntity>, ICRUDService<ArticleContract>
 {
     /// <inheritdoc />
-    public ArticleService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+    public ArticleService(IUnitOfWork unitOfWork, IServiceScopeFactory mapper) : base(unitOfWork, mapper)
     { }
 
     /// <inheritdoc />

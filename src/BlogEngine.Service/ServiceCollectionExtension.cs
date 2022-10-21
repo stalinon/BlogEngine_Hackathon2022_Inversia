@@ -1,4 +1,5 @@
-﻿using BlogEngine.Service.Database;
+﻿using AutoMapper;
+using BlogEngine.Service.Database;
 using BlogEngine.Service.Mapping;
 using BlogEngine.Service.Middlewares;
 using BlogEngine.Service.Models;
@@ -21,11 +22,15 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddService(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabase(configuration);
-        services.AddSingleton<IAuthService, AuthService>();
-        services.AddSingleton<ICRUDService<UserContract>, UserService>();
-        services.AddSingleton<ICRUDService<CommentContract>, CommentService>();
-        services.AddSingleton<ICRUDService<ArticleContract>, ArticleService>();
-        services.AddAutoMapper(typeof(MappingProfile));
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ICRUDService<UserContract>, UserService>();
+        services.AddScoped<ICRUDService<CommentContract>, CommentService>();
+        services.AddScoped<ICRUDService<ArticleContract>, ArticleService>();
+
+        var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
+
+        var mapper = mapperConfig.CreateMapper();
+        services.AddSingleton(mapper);
         return services;
     }
 

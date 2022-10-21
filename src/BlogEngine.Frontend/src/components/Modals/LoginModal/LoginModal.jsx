@@ -59,8 +59,9 @@ export function LoginModal(props) {
             label="Войти"
             onClick={() => {
               var item = { nickname: login, password: password };
-              Auth.login(item).then((res) => Auth.me());
-              props.onClickOutside();
+              Auth.login(item)
+                .then((res) => props.onClickOutside())
+                .then(() => window.location.reload());
             }}
           />
         </Layout>

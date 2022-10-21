@@ -5,6 +5,7 @@ using BlogEngine.Service.Models;
 using EntityFrameworkCore.QueryBuilder.Interfaces;
 using EntityFrameworkCore.Repository.Interfaces;
 using EntityFrameworkCore.UnitOfWork.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogEngine.Service.Services.Impl;
 
@@ -17,10 +18,11 @@ public abstract class CRUDServiceBase<TContract, TEntity> : ICRUDService<TContra
     private readonly IMapper _mapper;
 
     /// <inheritdoc cref="CRUDServiceBase{TContract, TEntity}"/>
-    public CRUDServiceBase(IUnitOfWork unitOfWork, IMapper mapper)
+    public CRUDServiceBase(IUnitOfWork unitOfWork, IServiceScopeFactory factory)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
+        var scope = factory.CreateScope();
+        _mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
     }
 
     /// <inheritdoc />

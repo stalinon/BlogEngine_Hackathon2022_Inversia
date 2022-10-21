@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using BlogEngine.Service.Database.Entities;
+﻿using BlogEngine.Service.Database.Entities;
 using BlogEngine.Service.Models;
 using EntityFrameworkCore.QueryBuilder.Interfaces;
 using EntityFrameworkCore.Repository.Interfaces;
 using EntityFrameworkCore.UnitOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogEngine.Service.Services.Impl;
 
@@ -14,7 +14,7 @@ namespace BlogEngine.Service.Services.Impl;
 internal class CommentService : CRUDServiceBase<CommentContract, CommentEntity>, ICRUDService<CommentContract>
 {
     /// <inheritdoc />
-    public CommentService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+    public CommentService(IUnitOfWork unitOfWork, IServiceScopeFactory mapper) : base(unitOfWork, mapper)
     { }
 
     /// <inheritdoc />

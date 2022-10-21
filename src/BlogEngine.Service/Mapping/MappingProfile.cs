@@ -29,6 +29,8 @@ internal class MappingProfile : Profile
             .ForMember(d => d.PasswordHash, s => s.Ignore())
             .ForMember(d => d.Role, s => s.MapFrom(m => m.Role))
             .ForPath(d => d.UserInfo.Nickname, s => s.MapFrom(m => m.Nickname))
+            .ForPath(d => d.UserInfo.Id, s => s.MapFrom(m => m.Id))
+            .ForPath(d => d.UserInfoId, s => s.MapFrom(m => m.Id))
             .ForPath(d => d.UserInfo.FirstName, s => s.MapFrom(m => m.FirstName))
             .ForPath(d => d.UserInfo.LastName, s => s.MapFrom(m => m.LastName))
             .ForPath(d => d.UserInfo.Image.Base64, s => s.MapFrom(m => m.Image))
@@ -52,6 +54,8 @@ internal class MappingProfile : Profile
             .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
             .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
             .ForMember(d => d.Updated, s => s.MapFrom(m => m.Updated))
+            .ForPath(d => d.UserInfo.Id, s => s.MapFrom(m => m.Author.Id))
+            .ForPath(d => d.UserInfoId, s => s.MapFrom(m => m.Author.Id))
             .ForPath(d => d.UserInfo.Nickname, s => s.MapFrom(m => m.Author.Nickname))
             .ForPath(d => d.UserInfo.FirstName, s => s.MapFrom(m => m.Author.FirstName))
             .ForPath(d => d.UserInfo.LastName, s => s.MapFrom(m => m.Author.LastName))
@@ -61,5 +65,28 @@ internal class MappingProfile : Profile
             .ForMember(d => d.Comments, s => s.MapFrom(m => m.Comments))
             .ForPath(d => d.LeadingImage.Base64, s => s.MapFrom(m => m.LeadingImage))
             .ReverseMap();
+
+        CreateMap<ArticleContract, ArticleEntity>()
+            .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
+            .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
+            .ForMember(d => d.Updated, s => s.MapFrom(m => m.Updated))
+            .ForPath(d => d.UserInfoId, s => s.MapFrom(m => m.Author.Id))
+            .ForMember(d => d.Description, s => s.MapFrom(m => m.Description))
+            .ForMember(d => d.Header, s => s.MapFrom(m => m.Header))
+            .ForMember(d => d.Comments, s => s.MapFrom(m => m.Comments))
+            .ForPath(d => d.LeadingImage.Base64, s => s.MapFrom(m => m.LeadingImage));
+
+        CreateMap<ArticleEntity, ArticleContract>()
+            .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
+            .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
+            .ForMember(d => d.Updated, s => s.MapFrom(m => m.Updated))
+            .ForPath(d => d.Author.Nickname, s => s.MapFrom(m => m.UserInfo.Nickname))
+            .ForPath(d => d.Author.FirstName, s => s.MapFrom(m => m.UserInfo.FirstName))
+            .ForPath(d => d.Author.LastName, s => s.MapFrom(m => m.UserInfo.LastName))
+            .ForPath(d => d.Author.Image, s => s.MapFrom(m => m.UserInfo.Image.Base64))
+            .ForMember(d => d.Description, s => s.MapFrom(m => m.Description))
+            .ForMember(d => d.Header, s => s.MapFrom(m => m.Header))
+            .ForMember(d => d.Comments, s => s.MapFrom(m => m.Comments))
+            .ForPath(d => d.LeadingImage, s => s.MapFrom(m => m.LeadingImage.Base64));
     }
 }

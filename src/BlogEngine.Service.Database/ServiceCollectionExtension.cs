@@ -22,10 +22,10 @@ public static class ServiceCollectionExtension
         var dbConnectionString = configuration.GetValue<string>(ConfigKeys.DB_CONNECTION_STRING, ConfigDefaults.DB_CONNECTION_STRING);
 
         services.AddDbContext<DatabaseContext>(option 
-            => option.UseNpgsql(dbConnectionString, o => o.MigrationsHistoryTable("MIGRATIONS")), ServiceLifetime.Singleton);
-        services.AddSingleton<DbContext, DatabaseContext>();
-        services.AddUnitOfWork(ServiceLifetime.Singleton);
-        services.AddUnitOfWork<DatabaseContext>(ServiceLifetime.Singleton);
+            => option.UseNpgsql(dbConnectionString, o => o.MigrationsHistoryTable("MIGRATIONS")), ServiceLifetime.Scoped);
+        services.AddScoped<DbContext, DatabaseContext>();
+        services.AddUnitOfWork(ServiceLifetime.Scoped);
+        services.AddUnitOfWork<DatabaseContext>(ServiceLifetime.Scoped);
 
         return services;
     }

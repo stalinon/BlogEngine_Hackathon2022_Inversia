@@ -33,10 +33,10 @@ public sealed class RegisterContract
     /// <summary>
     ///     Оригинальная ширина изображения
     /// </summary>
-    public int Width { get; set; }
+    public int? Width { get; set; }
 
     /// <summary>
     ///     Оригинальная высота изображения
     /// </summary>
-    public int Height { get; set; }
+    public int? Height { get; set; }
 }

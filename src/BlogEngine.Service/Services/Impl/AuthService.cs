@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
-using BlogEngine.Service.Models;
-using BlogEngine.Service.Database.Entities;
-using EntityFrameworkCore.UnitOfWork.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using BlogEngine.Service.Exceptions;
-using Microsoft.IdentityModel.Tokens;
 using BlogEngine.Service.Configuration;
+using BlogEngine.Service.Database.Entities;
+using BlogEngine.Service.Exceptions;
+using BlogEngine.Service.Models;
+using EntityFrameworkCore.UnitOfWork.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace BlogEngine.Service.Services.Impl;
 
@@ -22,11 +21,12 @@ internal sealed class AuthService : IAuthService
 
     /// <inheritdoc cref="AuthService"/>
     public AuthService(
-        IMapper mapper,
+        IServiceScopeFactory factory,
         IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
+        var scope = factory.CreateScope();
+        _mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
     }
 
     /// <inheritdoc />
@@ -36,7 +36,7 @@ internal sealed class AuthService : IAuthService
 
         var query = repository
             .SingleResultQuery()
-            .Include(s => s.Include(q => q.UserInfo))
+            .Include(s => s.Include(q => q.UserInfo).ThenInclude(x => x.Image))
             .AndFilter(u => u.UserInfo.Nickname == loginContract.Nickname);
 
         var entity = await repository.FirstOrDefaultAsync(query, cancellationToken);
@@ -51,7 +51,7 @@ internal sealed class AuthService : IAuthService
 
         var query = repository
             .SingleResultQuery()
-            .Include(s => s.Include(q => q.UserInfo))
+            .Include(s => s.Include(q => q.UserInfo).ThenInclude(x => x.Image))
             .AndFilter(u => u.UserInfo.Nickname == registerContract.Nickname);
 
         var entity = await repository.FirstOrDefaultAsync(query, cancellationToken);
@@ -77,7 +77,7 @@ internal sealed class AuthService : IAuthService
     /// <inheritdoc />
     public async Task<UserContract> GetMeAsync(HttpContext context, CancellationToken cancellationToken = default)
     {
-        if (!context.Request.Headers.TryGetValue("Authorization", out var auth))
+        if (!context.Request.Headers.TryGetValue("Authorization", out var auth) || auth.Any(s => s == "Bearer null"))
         {
             throw new AppException("Not authorized", System.Net.HttpStatusCode.Unauthorized);
         }
@@ -89,7 +89,7 @@ internal sealed class AuthService : IAuthService
 
         var query = repository
             .SingleResultQuery()
-            .Include(s => s.Include(q => q.UserInfo))
+            .Include(s => s.Include(q => q.UserInfo).ThenInclude(x => x.Image))
             .AndFilter(u => u.UserInfo.Nickname == nickname);
 
         var entity = await repository.FirstOrDefaultAsync(query, cancellationToken);

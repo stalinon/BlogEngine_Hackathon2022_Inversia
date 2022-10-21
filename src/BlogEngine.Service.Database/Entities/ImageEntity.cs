@@ -20,7 +20,7 @@ public sealed class ImageEntity : BaseEntity, IHasEntityId
     ///     Изображение в формате Base64
     /// </summary>
     [Column("base64")]
-    public string Base64 { get; set; } = default!;
+    public string Base64 { get; set; } = string.Empty;
 
     /// <summary>
     ///     Оригинальная ширина изображения
