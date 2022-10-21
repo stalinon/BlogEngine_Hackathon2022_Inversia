@@ -104,7 +104,7 @@ export default function Editor() {
           form="default"
           width="full"
           size="l"
-          requered
+          requered="true"
         />
         <div>&nbsp;</div>
         <TextField
@@ -117,7 +117,7 @@ export default function Editor() {
           form="default"
           width="full"
           size="l"
-          requered
+          requered="true"
           minRows="3"
         />
         <div>&nbsp;</div>

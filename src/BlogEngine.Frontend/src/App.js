@@ -25,8 +25,15 @@ function App() {
             <Route path="users" element={<UsersPage />} />
           )}
           {user && user.role === 0 && (
+            <Route path="articles" element={<UsersPage />} />
+          )}
+          {user && user.role === 0 && (
+            <Route path="comments" element={<UsersPage />} />
+          )}
+          {user && user.role === 0 && (
             <Route path="publish" element={<PublishPage />} />
           )}
+          <Route path="article/:id" element={null} />
         </Route>
       </Routes>
     </BrowserRouter>

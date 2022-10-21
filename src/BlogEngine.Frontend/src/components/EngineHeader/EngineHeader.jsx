@@ -29,8 +29,16 @@ export default function EngineHeader() {
       onClick: () => navigate("/users"),
       rightIcon: IconUser,
     },
-    { label: "Статьи", rightIcon: IconDocFilled },
-    { label: "Комментарии", rightIcon: IconCommentStroked },
+    {
+      label: "Статьи",
+      onClick: () => navigate("/articles"),
+      rightIcon: IconDocFilled,
+    },
+    {
+      label: "Комментарии",
+      onClick: () => navigate("/comments"),
+      rightIcon: IconCommentStroked,
+    },
     {
       label: "Выйти",
       onClick: () => {
@@ -210,7 +218,13 @@ export default function EngineHeader() {
           <>
             <HeaderModule>
               <HeaderLogo>
-                <Text as="p" size="l" weight="bold">
+                <Text
+                  as="p"
+                  size="l"
+                  weight="bold"
+                  cursor="pointer"
+                  onClick={() => navigate("/")}
+                >
                   Logotype
                 </Text>
               </HeaderLogo>
