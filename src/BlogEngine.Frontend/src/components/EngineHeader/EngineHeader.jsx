@@ -1,4 +1,4 @@
-import { Theme, presetGpnDefault } from "@consta/uikit/Theme";
+import { Theme, presetGpnDefault, presetGpnDark } from "@consta/uikit/Theme";
 import { Text } from "@consta/uikit/Text";
 import { Header, HeaderLogo, HeaderModule } from "@consta/uikit/Header";
 import { Button } from "@consta/uikit/__internal__/src/components/Button/Button";
@@ -28,6 +28,11 @@ export default function EngineHeader() {
       label: "Пользователи",
       onClick: () => navigate("/users"),
       rightIcon: IconUser,
+    },
+    {
+      label: "Выпуски",
+      onClick: () => navigate("/issues"),
+      rightIcon: IconDocFilled,
     },
     {
       label: "Статьи",
@@ -164,7 +169,7 @@ export default function EngineHeader() {
         case 0: {
           return (
             <>
-              <HeaderModule indent="s">
+              <HeaderModule indent="l">
                 <Button
                   size="m"
                   view="secondary"
@@ -172,6 +177,16 @@ export default function EngineHeader() {
                   label="Опубликовать статью"
                   iconLeft={IconAdd}
                   onClick={() => navigate("/publish")}
+                />
+              </HeaderModule>
+              <HeaderModule indent="l">
+                <Button
+                  size="m"
+                  view="primary"
+                  form="round"
+                  label="Выпустить"
+                  iconLeft={IconAdd}
+                  onClick={() => navigate("/publish_issue")}
                 />
               </HeaderModule>
               <HeaderModule indent="l">

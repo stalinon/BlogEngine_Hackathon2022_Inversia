@@ -61,6 +61,65 @@ export class Article {
   }
 }
 
+export class Issue {
+  static async post(item) {
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+    };
+    var url = `${apiBase}${"Issue"}`;
+    return await axios.post(url, item, config).then((res) => {
+      console.log(res);
+      return res;
+    });
+  }
+
+  static async put(item) {
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+    };
+    var url = `${apiBase}${"Issue"}`;
+    return await axios.put(url, item, config).then((res) => {
+      console.log(res);
+      return res;
+    });
+  }
+
+  static async get() {
+    var url = `${apiBase}${"Issue"}`;
+    return await axios.get(url).then((res) => {
+      console.log(res);
+      return res;
+    });
+  }
+
+  static async getById(id) {
+    var url = `${apiBase}${"Issue"}/${id}`;
+    return await axios.get(url).then((res) => {
+      console.log(res);
+      return res;
+    });
+  }
+
+  static async getPaged(page, capacity) {
+    var url = `${apiBase}${"Issue"}/pages?Page=${page}&Capacity=${capacity}`;
+    return await axios.get(url).then((res) => {
+      console.log(res);
+      return res;
+    });
+  }
+
+  static async delete(id) {
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+    };
+    var url = `${apiBase}${"Issue"}/${id}`;
+    return await axios.delete(url, config).then((res) => {
+      console.log(res);
+      return res;
+    });
+  }
+}
+
 export class Comment {
   static async post(item) {
     const config = {

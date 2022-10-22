@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { Auth } from "./lib/ApiClient";
 import MainPage from "./pages/main_page";
 import PublishPage from "./pages/publish_page";
+import PublishIssuePage from "./pages/publish_issue_page";
+import ArticlePage from "./pages/article_page";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,12 +30,18 @@ function App() {
             <Route path="articles" element={<UsersPage />} />
           )}
           {user && user.role === 0 && (
+            <Route path="issues" element={<UsersPage />} />
+          )}
+          {user && user.role === 0 && (
             <Route path="comments" element={<UsersPage />} />
           )}
           {user && user.role === 0 && (
             <Route path="publish" element={<PublishPage />} />
           )}
-          <Route path="article/:id" element={null} />
+          {user && user.role === 0 && (
+            <Route path="publish_issue" element={<PublishIssuePage />} />
+          )}
+          <Route path="article/:id" element={<ArticlePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

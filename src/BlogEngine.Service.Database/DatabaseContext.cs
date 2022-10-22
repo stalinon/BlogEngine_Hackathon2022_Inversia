@@ -39,6 +39,11 @@ internal class DatabaseContext : DbContext
     /// </summary>
     public DbSet<UserInfoEntity> UserInfos { get; } = default!;
 
+    /// <summary>
+    ///     Выпуски
+    /// </summary>
+    public DbSet<IssueEntity> Issues { get; } = default!;
+
     #region Override Methods
 
     /// <inheritdoc/>
@@ -81,6 +86,7 @@ internal class DatabaseContext : DbContext
         ImageEntity.Setup(modelBuilder);
         UserInfoEntity.Setup(modelBuilder);
         UserEntity.Setup(modelBuilder);
+        IssueEntity.Setup(modelBuilder);
     }
 
     #endregion

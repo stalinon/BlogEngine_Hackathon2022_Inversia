@@ -26,6 +26,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<ICRUDService<UserContract>, UserService>();
         services.AddScoped<ICRUDService<CommentContract>, CommentService>();
         services.AddScoped<ICRUDService<ArticleContract>, ArticleService>();
+        services.AddScoped<ICRUDService<IssueContract>, IssueService>();
 
         var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
 

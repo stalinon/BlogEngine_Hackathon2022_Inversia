@@ -1,5 +1,5 @@
 import ReactQuill from "react-quill";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField } from "@consta/uikit/TextField";
 import "react-quill/dist/quill.snow.css";
 import { Theme, presetGpnDefault } from "@consta/uikit/Theme";
@@ -10,8 +10,11 @@ import { Button } from "@consta/uikit/Button";
 import { Steps } from "@consta/uikit/Steps";
 import { readBase64 } from "../../lib/Helpers";
 import { Layout } from "@consta/uikit/Layout";
-import { Article, Auth } from "../../lib/ApiClient";
+import { Issue, Article, Auth } from "../../lib/ApiClient";
 import { useNavigate } from "react-router-dom";
+import { Select } from "@consta/uikit/Select";
+import { Tag } from "@consta/uikit/Tag";
+import { useForceUpdate } from "../../hooks/useForceUpdate";
 
 const modules = {
   toolbar: [
@@ -51,6 +54,7 @@ const formats = [
 const items = [
   { id: 1, label: "Настройка статьи" },
   { id: 2, label: "Написание текста" },
+  { id: 3, label: "Добавление тегов" },
 ];
 
 export default function Editor() {
@@ -59,14 +63,42 @@ export default function Editor() {
   const [title, setTitle] = useState(null);
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState(null);
+  const [issue, setIssue] = useState(null);
+  const [issueSelect, setIssueSelect] = useState([]);
   const [currStep, setCurrStep] = useState(items[0]);
   const activeStepIndex = items.findIndex((item) => item === currStep);
   const navigate = useNavigate();
+  const update = useForceUpdate();
+
+  const [tag, setTag] = useState(null);
+  const [tags, setTags] = useState([]);
 
   const handleNext = () => setCurrStep(items[activeStepIndex + 1]);
   const handlePrev = () => setCurrStep(items[activeStepIndex - 1]);
 
   files[0] && readBase64(files[0], (a) => setImage(a));
+
+  useEffect(() => {
+    !issueSelect[0] &&
+      Issue.get().then((res) => {
+        setIssueSelect(
+          res.data.map((x, i) => {
+            return {
+              id: i,
+              issue_id: x.id,
+              label: `ИНверсия, выпуск ${x.issue_number} от ${new Date(
+                x.date
+              ).toLocaleString("ru", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                timezone: "UTC",
+              })}`,
+            };
+          })
+        );
+      });
+  }, [issueSelect]);
 
   function sendArticle() {
     Auth.me().then((res) => {
@@ -76,9 +108,82 @@ export default function Editor() {
         leading_image: image,
         author: res.data,
         text: value,
+        issue_id: issue.issue_id,
+        tags: tags,
       };
+      console.log(issue);
+      console.log(article);
       Article.post(article).then((res) => navigate("/"));
     });
+  }
+
+  function renderTags() {
+    return (
+      <div>
+        <Text
+          as="h2"
+          cursor="pointer"
+          display="inline-block"
+          size="l"
+          weight="bold"
+        >
+          Добавьте теги для статьи
+        </Text>
+        <div>&nbsp;</div>
+        <Layout direction="row">
+          <Layout>
+            <TextField
+              label="Введите тег и нажмите на кнопку, чтобы добавить"
+              onChange={({ value }) => setTag(value)}
+              value={tag}
+            />
+          </Layout>
+          <Layout
+            style={{
+              margin: "28pt",
+            }}
+          >
+            <Button
+              label="+"
+              size="s"
+              view="secondary"
+              onClick={() => {
+                let tmp = tags;
+                tmp.push(tag);
+                setTags(tmp);
+                setTag(null);
+              }}
+            />
+          </Layout>
+        </Layout>
+
+        {tags.map((t, i) => {
+          return (
+            <Tag
+              key={i}
+              group={i}
+              mode="cancel"
+              label={t}
+              style={{ margin: 5 }}
+              onCancel={() => {
+                let tmp = tags;
+                tmp.splice(i, 1);
+                setTags(tmp);
+                update();
+              }}
+            />
+          );
+        })}
+
+        <div>&nbsp;</div>
+        <Button
+          size="l"
+          label="Опубликовать"
+          width="full"
+          onClick={sendArticle}
+        />
+      </div>
+    );
   }
 
   function renderSetup() {
@@ -105,6 +210,14 @@ export default function Editor() {
           width="full"
           size="l"
           requered="true"
+        />
+        <div>&nbsp;</div>
+        <Select
+          items={issueSelect}
+          placeholder="Выберите выпуск"
+          label="Выберите выпуск журнала"
+          onChange={({ value }) => setIssue(issueSelect[value.id])}
+          value={issue}
         />
         <div>&nbsp;</div>
         <TextField
@@ -137,6 +250,12 @@ export default function Editor() {
           />
         ))}
         <div>&nbsp;</div>
+        <Button
+          size="l"
+          label="Опубликовать"
+          width="full"
+          onClick={sendArticle}
+        />
       </div>
     );
   }
@@ -161,13 +280,6 @@ export default function Editor() {
           modules={modules}
           formats={formats}
           className="editor"
-        />
-        <div>&nbsp;</div>
-        <Button
-          size="l"
-          label="Опубликовать"
-          width="full"
-          onClick={sendArticle}
         />
       </div>
     );
@@ -196,6 +308,7 @@ export default function Editor() {
         value={currStep}
         onChange={(item) => setCurrStep(item)}
       />
+      {activeStepIndex === 2 && renderTags()}
       {activeStepIndex === 1 && renderEditor()}
       {activeStepIndex === 0 && renderSetup()}
       <div>&nbsp;</div>

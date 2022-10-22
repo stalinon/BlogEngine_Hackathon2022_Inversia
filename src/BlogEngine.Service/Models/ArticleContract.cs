@@ -36,7 +36,19 @@ public sealed class ArticleContract : BaseContract
     public string Text { get; set; } = default!;
 
     /// <summary>
+    ///     Идентификатор выпуска
+    /// </summary>
+    [JsonPropertyName("issue_id")]
+    public long IssueId { get; set; } = default!;
+
+    /// <summary>
     ///     Комментарии к статье
     /// </summary>
     public CommentContract[]? Comments { get; set; }
+
+    /// <summary>
+    ///     Тэги
+    /// </summary>
+    [JsonPropertyName("tags")]
+    public string[] Tags { get; set; } = Array.Empty<string>();
 }

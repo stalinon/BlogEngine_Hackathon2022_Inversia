@@ -68,16 +68,19 @@ internal class MappingProfile : Profile
 
         CreateMap<ArticleContract, ArticleEntity>()
             .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
+            .ForMember(d => d.IssueId, s => s.MapFrom(m => m.IssueId))
             .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
             .ForMember(d => d.Updated, s => s.MapFrom(m => m.Updated))
             .ForPath(d => d.UserInfoId, s => s.MapFrom(m => m.Author.Id))
             .ForMember(d => d.Description, s => s.MapFrom(m => m.Description))
             .ForMember(d => d.Header, s => s.MapFrom(m => m.Header))
             .ForMember(d => d.Comments, s => s.MapFrom(m => m.Comments))
+            .ForMember(d => d.Tags, s => s.MapFrom(m => m.Tags))
             .ForPath(d => d.LeadingImage.Base64, s => s.MapFrom(m => m.LeadingImage));
 
         CreateMap<ArticleEntity, ArticleContract>()
             .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
+            .ForMember(d => d.IssueId, s => s.MapFrom(m => m.IssueId))
             .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
             .ForMember(d => d.Updated, s => s.MapFrom(m => m.Updated))
             .ForPath(d => d.Author.Nickname, s => s.MapFrom(m => m.UserInfo.Nickname))
@@ -86,7 +89,26 @@ internal class MappingProfile : Profile
             .ForPath(d => d.Author.Image, s => s.MapFrom(m => m.UserInfo.Image.Base64))
             .ForMember(d => d.Description, s => s.MapFrom(m => m.Description))
             .ForMember(d => d.Header, s => s.MapFrom(m => m.Header))
+            .ForMember(d => d.Tags, s => s.MapFrom(m => m.Tags))
             .ForMember(d => d.Comments, s => s.MapFrom(m => m.Comments))
             .ForPath(d => d.LeadingImage, s => s.MapFrom(m => m.LeadingImage.Base64));
+
+        CreateMap<IssueEntity, IssueContract>()
+            .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
+            .ForMember(d => d.IssueNumber, s => s.MapFrom(m => m.IssueNumber))
+            .ForMember(d => d.Date, s => s.MapFrom(m => m.Date.ToDateTime(TimeOnly.MinValue)))
+            .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
+            .ForMember(d => d.Updated, s => s.MapFrom(m => m.Updated))
+            .ForPath(d => d.LeadingImage, s => s.MapFrom(m => m.LeadingImage.Base64))
+            .ForMember(d => d.ArticleIds, s => s.MapFrom(m => m.Articles.Select(t => t.Id)));
+
+        CreateMap<IssueContract, IssueEntity>()
+            .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
+            .ForMember(d => d.IssueNumber, s => s.MapFrom(m => m.IssueNumber))
+            .ForMember(d => d.Date, s => s.MapFrom(m => DateOnly.FromDateTime(m.Date)))
+            .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
+            .ForMember(d => d.Updated, s => s.MapFrom(m => m.Updated))
+            .ForPath(d => d.LeadingImage.Base64, s => s.MapFrom(m => m.LeadingImage))
+            .ForMember(d => d.Articles, s => s.MapFrom(m => m.ArticleIds.Select(t => new ArticleEntity { Id = t })));
     }
 }

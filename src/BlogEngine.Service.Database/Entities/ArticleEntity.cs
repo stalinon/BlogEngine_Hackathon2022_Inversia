@@ -1,5 +1,4 @@
-﻿using BlogEngine.Core.Enums;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -41,6 +40,18 @@ public sealed class ArticleEntity : BaseEntity, IHasEntityId
     public ImageEntity? LeadingImage { get; set; }
 
     /// <summary>
+    ///     Идентификатор ведущего изображения
+    /// </summary>
+    [Column("issue_id")]
+    [ForeignKey(nameof(Issue))]
+    public long IssueId { get; set; }
+
+    /// <summary>
+    ///     Ведущее изображение
+    /// </summary>
+    public IssueEntity Issue { get; set; } = default!;
+
+    /// <summary>
     ///     Идентификатор информации о пользователе
     /// </summary>
     [Column("user_info_id")]
@@ -59,6 +70,12 @@ public sealed class ArticleEntity : BaseEntity, IHasEntityId
     public string Text { get; set; } = default!;
 
     /// <summary>
+    ///     Тэги
+    /// </summary>
+    [Column("tags")]
+    public string[] Tags { get; set; } = Array.Empty<string>();
+
+    /// <summary>
     ///     Комментарии к статье
     /// </summary>
     public IList<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
@@ -75,6 +92,5 @@ public sealed class ArticleEntity : BaseEntity, IHasEntityId
             .WithOne(_ => _.Article)
             .HasForeignKey(_ => _.ArticleId)
             .HasConstraintName("FK_articles_comments");
-
     }
 }
