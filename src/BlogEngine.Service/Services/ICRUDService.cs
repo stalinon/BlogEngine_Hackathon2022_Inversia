@@ -3,7 +3,7 @@
 namespace BlogEngine.Service.Services;
 
 /// <summary>
-///     CRUD-сервис
+///     Общий CRUD-сервис
 /// </summary>
 public interface ICRUDService<T> where T : BaseContract
 { 
