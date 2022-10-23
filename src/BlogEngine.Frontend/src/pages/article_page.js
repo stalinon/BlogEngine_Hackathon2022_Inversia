@@ -149,11 +149,13 @@ export default function ArticlePage(props) {
     <Theme className="App" preset={presetGpnDefault}>
       <div
         style={{
-          marginLeft: 250,
-          marginRight: 250,
-          marginBottom: 50,
-          marginTop: 50,
-          paddingBottom: 50,
+          marginLeft: 200,
+          marginRight: 200,
+          marginBottom: 30,
+          marginTop: 30,
+          padding: 30,
+          background: "rgba(256, 256, 256, 0.8)",
+          boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
         }}
       >
         {article && renderTopBlock()}

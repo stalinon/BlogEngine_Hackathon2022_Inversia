@@ -1,6 +1,10 @@
 import { Theme, presetGpnDefault, presetGpnDark } from "@consta/uikit/Theme";
-import { Text } from "@consta/uikit/Text";
-import { Header, HeaderLogo, HeaderModule } from "@consta/uikit/Header";
+import {
+  Header,
+  HeaderLogo,
+  HeaderModule,
+  HeaderMenu,
+} from "@consta/uikit/Header";
 import { Button } from "@consta/uikit/__internal__/src/components/Button/Button";
 import { IconUser } from "@consta/uikit/IconUser";
 import { IconAdd } from "@consta/uikit/IconAdd";
@@ -16,12 +20,16 @@ import { IconArrowDown } from "@consta/uikit/IconArrowDown";
 import { IconCommentStroked } from "@consta/uikit/IconCommentStroked";
 import { IconDocFilled } from "@consta/uikit/IconDocFilled";
 import { IconExit } from "@consta/uikit/IconExit";
+import { useForceUpdate } from "../../hooks/useForceUpdate";
+import Inversia from "../../Inversia.svg";
 
 export default function EngineHeader() {
+  const update = useForceUpdate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [menu, setMenu] = useState(false);
+  const [active, setActive] = useState(0);
   const navigate = useNavigate();
   const adminItems = [
     {
@@ -65,6 +73,49 @@ export default function EngineHeader() {
       rightIcon: IconExit,
     },
   ];
+
+  const menuItems = Array.from([
+    {
+      label: "Главная",
+      onClick: () => {
+        setActive(0);
+        update();
+      },
+    },
+    {
+      label: "Выпуски",
+      onClick: () => {
+        setActive(1);
+        update();
+      },
+    },
+    {
+      label: "Фотогалерея",
+      onClick: () => {
+        setActive(2);
+        update();
+      },
+    },
+    {
+      label: "Школа журналистики",
+      onClick: () => {
+        setActive(3);
+        update();
+      },
+    },
+    {
+      label: "О журнале",
+      onClick: () => {
+        setActive(4);
+        update();
+      },
+    },
+  ]).map((x, i) =>
+    i === active
+      ? { label: x.label, onClick: x.onClick, active: true }
+      : { label: x.label, onClick: x.onClick }
+  );
+
   const ref = useRef(null);
 
   useEffect(() => {
@@ -229,24 +280,35 @@ export default function EngineHeader() {
   return (
     <Theme className="App" preset={presetGpnDefault}>
       <Header
+        style={{
+          padding: 10,
+          height: 80,
+        }}
         leftSide={
           <>
             <HeaderModule>
-              <HeaderLogo>
-                <Text
-                  as="p"
-                  size="l"
-                  weight="bold"
-                  cursor="pointer"
-                  onClick={() => navigate("/")}
-                >
-                  Logotype
-                </Text>
-              </HeaderLogo>
+              <img
+                style={{
+                  display: "inline-block",
+                  cursor: "pointer",
+                  height: 100,
+                  marginLeft: 60,
+                  marginRight: 0,
+                }}
+                src={Inversia}
+                fill="white"
+                onClick={() => navigate("/")}
+              />
+            </HeaderModule>
+            <HeaderModule>
+              <Theme className="App" preset={presetGpnDefault}>
+                <HeaderMenu items={menuItems} />
+              </Theme>
             </HeaderModule>
           </>
         }
         rightSide={renderRight()}
+        className="gradient-h"
       />
       <LoginModal
         isOpen={isLoginModalOpen}

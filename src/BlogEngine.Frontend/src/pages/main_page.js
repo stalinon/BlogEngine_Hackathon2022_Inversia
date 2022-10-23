@@ -30,9 +30,9 @@ export default function MainPage() {
 
   useEffect(() => {
     !issues[0] &&
-      Issue.getPaged(currentPage2, 6).then((res) => {
+      Issue.getPaged(currentPage2, 4).then((res) => {
         setIssues(res.data.items);
-        setTotalPages2(Math.ceil(res.data.totalCount / 6));
+        setTotalPages2(Math.ceil(res.data.totalCount / 4));
         setCurrentPage2(res.data.page);
       });
   }, [currentPage2, issues]);
@@ -42,101 +42,112 @@ export default function MainPage() {
     issues[0] && (
       <Theme className="App" preset={presetGpnDefault}>
         <Layout style={{ margin: 50 }}>
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
-            <Layout flex={9} direction="column" className="articles-page">
-              <Text as="h2" weight="bold" size="xl">
-                Статьи
-              </Text>
-              <div style={{ display: "flex", flexWrap: "wrap" }}>
-                {articles.map((article, i) => (
-                  <div style={{ margin: 5 }}>
-                    <NewsHeaderCard
-                      key={i}
-                      className="news_card"
-                      onClick={() => navigate("/article/" + article.id)}
-                      thumbnail={URL.createObjectURL(
-                        b64toBlob(article.leading_image)
-                      )}
-                      author={
-                        article.author.first_name +
-                        " " +
-                        article.author.last_name
-                      }
-                      date={new Date(article.created).toLocaleString("ru", {
-                        year: "numeric",
-                        month: "numeric",
-                        day: "numeric",
-                        timezone: "UTC",
-                      })}
-                      title={article.header}
-                      tags={article.tags.slice(0, 3)}
-                    />
-                  </div>
-                ))}
-              </div>
-              <Layout>
-                <Pagination
-                  currentPage={currentPage}
-                  onChange={(value) => setCurrentPage(value)}
-                  totalPages={totalPages}
-                  size="s"
-                  position="center"
-                />
-              </Layout>
+          <Layout
+            style={{ display: "flex", flexWrap: "wrap" }}
+            flex={5}
+            direction="column"
+            className="articles-page"
+          >
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {articles.map((article, i) => (
+                <div
+                  key={i}
+                  style={{
+                    marginTop: 15,
+                    marginBottom: 15,
+                    marginLeft: 5,
+                    marginRight: 5,
+                  }}
+                >
+                  <NewsHeaderCard
+                    key={i}
+                    className="news_card"
+                    onClick={() => navigate("/article/" + article.id)}
+                    thumbnail={URL.createObjectURL(
+                      b64toBlob(article.leading_image)
+                    )}
+                    author={
+                      article.author.first_name + " " + article.author.last_name
+                    }
+                    date={new Date(article.created).toLocaleString("ru", {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                      timezone: "UTC",
+                    })}
+                    title={article.header}
+                    tags={article.tags.slice(0, 3)}
+                  />
+                </div>
+              ))}
+            </div>
+            <Layout>
+              <Pagination
+                currentPage={currentPage}
+                onChange={(value) => setCurrentPage(value)}
+                totalPages={totalPages}
+                size="s"
+                position="center"
+              />
             </Layout>
-            <Layout
-              direction="column"
-              flex={1}
-              className="issues-page gradient"
+          </Layout>
+          <Layout
+            direction="column"
+            flex={1}
+            className="issues-page gradient"
+            style={{
+              paddingBottom: 50,
+              borderRadius: 10,
+              marginTop: 21,
+            }}
+          >
+            <Text
+              as="h2"
+              weight="bold"
+              size="xl"
+              align="center"
+              style={{ marginLeft: 16, color: "white" }}
+            >
+              Выпуски
+            </Text>
+            <div
               style={{
-                paddingBottom: 50,
-                borderRadius: 10,
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
               }}
             >
-              <Text
-                as="h2"
-                weight="bold"
-                size="xl"
-                align="center"
-                style={{ marginLeft: 16, color: "white" }}
-              >
-                Выпуски
-              </Text>
-              <Layout direction="column">
-                <div style={{ display: "flex", flexWrap: "wrap" }}>
-                  {issues.map((article, i) => (
-                    <Layout style={{ margin: 10 }}>
-                      <NewsHeaderCard
-                        key={i}
-                        className="news_card"
-                        onClick={() => navigate("/issue/" + article.id)}
-                        thumbnail={URL.createObjectURL(
-                          b64toBlob(article.leading_image)
-                        )}
-                        date={new Date(article.date).toLocaleString("ru", {
-                          year: "numeric",
-                          month: "numeric",
-                          day: "numeric",
-                          timezone: "UTC",
-                        })}
-                        title={`ИНверсия, выпуск ${article.issue_number}`}
-                        style={{ width: "auto", height: "auto" }}
-                      />
-                    </Layout>
-                  ))}
+              {issues.map((article, i) => (
+                <div key={i} style={{ margin: 10 }}>
+                  <NewsHeaderCard
+                    key={i}
+                    className="news_card"
+                    onClick={() => navigate("/issue/" + article.id)}
+                    thumbnail={URL.createObjectURL(
+                      b64toBlob(article.leading_image)
+                    )}
+                    date={new Date(article.date).toLocaleString("ru", {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                      timezone: "UTC",
+                    })}
+                    title={`ИНверсия, выпуск ${article.issue_number}`}
+                    style={{ width: "auto", height: "auto" }}
+                  />
                 </div>
-              </Layout>
-              <Layout>
-                <Pagination
-                  currentPage={currentPage2}
-                  onChange={(value) => setCurrentPage2(value)}
-                  totalPages={totalPages2}
-                  size="s"
-                  position="center"
-                />
-              </Layout>
+              ))}
+            </div>
+            <Layout>
+              <Pagination
+                currentPage={currentPage2}
+                onChange={(value) => setCurrentPage2(value)}
+                totalPages={totalPages2}
+                size="s"
+                position="center"
+              />
             </Layout>
-          </div>
+          </Layout>
         </Layout>
       </Theme>
     )

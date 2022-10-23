@@ -32,3 +32,12 @@ img {
     rgba(208, 240, 255, 1) 100%
   );
 }
+
+.gradient-h {
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(21, 96, 180, 1) 0%,
+    rgba(208, 240, 255, 1) 100%
+  );
+}
