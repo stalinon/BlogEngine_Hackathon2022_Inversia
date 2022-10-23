@@ -40,6 +40,12 @@ public sealed class IssueEntity : BaseEntity, IHasEntityId
     public ImageEntity? LeadingImage { get; set; }
 
     /// <summary>
+    ///     Выпуск в формате .pdf
+    /// </summary>
+    [Column("pdf")]
+    public string Pdf { get; set; } = string.Empty;
+
+    /// <summary>
     ///     Статьи
     /// </summary>
     public IList<ArticleEntity> Articles { get; set; } = new List<ArticleEntity>();

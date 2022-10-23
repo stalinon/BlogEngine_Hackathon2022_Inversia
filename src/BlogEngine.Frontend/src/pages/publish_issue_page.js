@@ -15,10 +15,13 @@ export default function PublishIssuePage() {
   const [date, setDate] = useState(null);
   const [number, setNumber] = useState(null);
   const [files, setFiles] = useState([]);
+  const [pdfs, setPdfs] = useState([]);
   const [image, setImage] = useState(null);
+  const [pdf, setPdf] = useState(null);
   const navigate = useNavigate();
 
   files[0] && readBase64(files[0], (a) => setImage(a));
+  pdfs[0] && readBase64(pdfs[0], (a) => setPdf(a));
   return (
     <Theme className="App" preset={presetGpnDefault}>
       <div
@@ -59,12 +62,33 @@ export default function PublishIssuePage() {
             />
           </Layout>
           <div>&nbsp;</div>
-          <DragNDropField multiple={false} onDropFiles={setFiles}>
+          <DragNDropField
+            accept="image/*"
+            multiple={false}
+            onDropFiles={setFiles}
+          >
             <Text>Перетяните фото обложки сюда</Text>
           </DragNDropField>
           <div>&nbsp;</div>
           <Layout>
             {files.map((file) => {
+              return (
+                <Attachment
+                  key={file.name}
+                  fileName={file.name}
+                  fileExtension={file.name.match(/\.(?!.*\.)(\w*)/)?.[1]}
+                  fileDescription={file.type}
+                />
+              );
+            })}
+          </Layout>
+          <div>&nbsp;</div>
+          <DragNDropField accept=".pdf" multiple={false} onDropFiles={setPdfs}>
+            <Text>Перетяните .pdf-файл сюда</Text>
+          </DragNDropField>
+          <div>&nbsp;</div>
+          <Layout>
+            {pdfs.map((file) => {
               return (
                 <Attachment
                   key={file.name}
@@ -86,6 +110,7 @@ export default function PublishIssuePage() {
                 date: date,
                 issue_number: number,
                 leading_image: image,
+                pdf: pdf,
               };
               Issue.post(item).then(() => navigate("/issues"));
             }}

@@ -95,6 +95,7 @@ internal class MappingProfile : Profile
 
         CreateMap<IssueEntity, IssueContract>()
             .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
+            .ForMember(d => d.Pdf, s => s.MapFrom(m => m.Pdf))
             .ForMember(d => d.IssueNumber, s => s.MapFrom(m => m.IssueNumber))
             .ForMember(d => d.Date, s => s.MapFrom(m => m.Date.ToDateTime(TimeOnly.MinValue)))
             .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))
@@ -104,6 +105,7 @@ internal class MappingProfile : Profile
 
         CreateMap<IssueContract, IssueEntity>()
             .ForMember(d => d.Id, s => s.MapFrom(m => m.Id))
+            .ForMember(d => d.Pdf, s => s.MapFrom(m => m.Pdf))
             .ForMember(d => d.IssueNumber, s => s.MapFrom(m => m.IssueNumber))
             .ForMember(d => d.Date, s => s.MapFrom(m => DateOnly.FromDateTime(m.Date)))
             .ForMember(d => d.Created, s => s.MapFrom(m => m.Created))

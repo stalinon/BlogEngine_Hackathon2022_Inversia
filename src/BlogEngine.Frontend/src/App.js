@@ -8,6 +8,7 @@ import PublishPage from "./pages/publish_page";
 import EditPage from "./pages/edit_page";
 import PublishIssuePage from "./pages/publish_issue_page";
 import ArticlePage from "./pages/article_page";
+import IssuePage from "./pages/issue_page";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -51,6 +52,8 @@ function App() {
               />
             }
           />
+
+          <Route path="issue/:id" element={<IssuePage />} />
 
           {user && user.role === 0 && (
             <Route path="article/edit/:id" element={<EditPage />} />

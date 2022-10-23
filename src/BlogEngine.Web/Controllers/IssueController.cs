@@ -19,6 +19,7 @@ public class IssueController : CRUDControllerBase<IssueContract>
     ///     Создать новый
     /// </summary>
     [Allowed(UserRole.ADMIN)]
+    [DisableRequestSizeLimit]
     public override async Task<IActionResult> CreateAsync([FromBody] IssueContract item)
         => await base.CreateAsync(item);
 

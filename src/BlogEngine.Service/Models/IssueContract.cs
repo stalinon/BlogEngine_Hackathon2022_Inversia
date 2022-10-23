@@ -26,6 +26,12 @@ public sealed class IssueContract : BaseContract
     public string? LeadingImage { get; set; }
 
     /// <summary>
+    ///     Выпуск в формате .pdf
+    /// </summary>
+    [JsonPropertyName("pdf")]
+    public string Pdf { get; set; } = string.Empty;
+
+    /// <summary>
     ///     Статьи
     /// </summary>
     [JsonPropertyName("article_ids")]
