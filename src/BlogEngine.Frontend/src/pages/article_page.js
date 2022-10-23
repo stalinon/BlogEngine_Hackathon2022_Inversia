@@ -153,6 +153,7 @@ export default function ArticlePage(props) {
           marginRight: 250,
           marginBottom: 50,
           marginTop: 50,
+          paddingBottom: 50,
         }}
       >
         {article && renderTopBlock()}

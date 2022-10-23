@@ -148,7 +148,6 @@ export default function Editor(props) {
           setDesc,
           setFiles,
           files,
-          sendArticle,
           desc
         )}
       <div>&nbsp;</div>

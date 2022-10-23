@@ -85,8 +85,6 @@ public sealed class ArticleEntity : BaseEntity, IHasEntityId
     /// </summary>
     public static void Setup(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ArticleEntity>().HasIndex(x => x.UserInfoId).HasDatabaseName("IX_articles_user_info_id").IsUnique();
-
         modelBuilder.Entity<ArticleEntity>()
             .HasMany(_ => _.Comments)
             .WithOne(_ => _.Article)
