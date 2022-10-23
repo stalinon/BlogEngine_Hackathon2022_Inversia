@@ -35,7 +35,7 @@ export default function PublishIssuePage() {
             weight="bold"
             style={{ marginBottom: 20 }}
           >
-            Создайте новую статью
+            Создайте новый выпуск
           </Text>
           <Layout>
             <TextField

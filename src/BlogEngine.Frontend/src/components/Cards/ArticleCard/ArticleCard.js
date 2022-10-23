@@ -24,15 +24,15 @@ export default function ArticleCard(Article) {
           onClick={() => navigate(`/article/${article.id}`)}
         >
           <Layout direction="row">
-            <Layout flex={1}>
+            <Layout style={{ margin: 15 }} flex={1}>
               <Layout>
                 <img
                   src={URL.createObjectURL(b64toBlob(article.leading_image))}
-                  width="300"
+                  style={{ width: "100%" }}
                 />
               </Layout>
             </Layout>
-            <Layout direction="column" flex={4}>
+            <Layout style={{ margin: 15 }} direction="column" flex={4}>
               <Layout flex={1}>
                 <Text cursor="pointer" as="h2" weight="bold" size="xl">
                   {article.header}

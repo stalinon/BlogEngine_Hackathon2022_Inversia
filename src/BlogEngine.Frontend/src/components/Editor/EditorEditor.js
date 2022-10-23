@@ -10,6 +10,7 @@ import { Issue, Article, Auth } from "../../lib/ApiClient";
 import { useNavigate } from "react-router-dom";
 import { useForceUpdate } from "../../hooks/useForceUpdate";
 import { renderTags, renderSetup, renderEditor } from "./helpRender";
+import { b64toBlob } from "../../lib/Helpers";
 
 const modules = {
   toolbar: [
@@ -52,7 +53,7 @@ const items = [
   { id: 3, label: "Добавление тегов" },
 ];
 
-export default function Editor(props) {
+export default function EditorEditor(props) {
   const [value, setValue] = useState(null);
   const [desc, setDesc] = useState(null);
   const [title, setTitle] = useState(null);
@@ -64,6 +65,45 @@ export default function Editor(props) {
   const activeStepIndex = items.findIndex((item) => item === currStep);
   const navigate = useNavigate();
   const update = useForceUpdate();
+
+  const [article, setArticle] = useState(null);
+  console.log(props.Id);
+  useEffect(() => {
+    !article &&
+      props.Id &&
+      Article.getById(props.Id).then((res) => {
+        console.log(res.data.desc);
+        setArticle(res.data);
+        console.log(article);
+        console.log("FDFD");
+        console.log("SFADS");
+        setValue(res.data.text);
+        setDesc(res.data.desc);
+        setTitle(res.data.header);
+        setFiles([b64toBlob(res.data.image)]);
+        setIssue(
+          issueSelect.filter((x) => x.issue_id === res.data.issue_id)[0]
+        );
+        console.log(res.data);
+      });
+  }, [article, props.Id]);
+
+  function sendArticle() {
+    Auth.me().then((res) => {
+      let updated_article = {
+        header: title,
+        desc: desc,
+        leading_image: image,
+        author: res.data,
+        text: value,
+        issue_id: issue.issue_id,
+        tags: tags,
+      };
+      Article.put(updated_article).then((res) =>
+        navigate("/article/" + props.Id)
+      );
+    });
+  }
 
   const [tag, setTag] = useState(null);
   const [tags, setTags] = useState([]);
@@ -94,23 +134,6 @@ export default function Editor(props) {
         );
       });
   }, [issueSelect]);
-
-  function sendArticle() {
-    Auth.me().then((res) => {
-      let article = {
-        header: title,
-        desc: desc,
-        leading_image: image,
-        author: res.data,
-        text: value,
-        issue_id: issue.issue_id,
-        tags: tags,
-      };
-      console.log(issue);
-      console.log(article);
-      Article.post(article).then((res) => navigate("/"));
-    });
-  }
 
   return (
     <Theme

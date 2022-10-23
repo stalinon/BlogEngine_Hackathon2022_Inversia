@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Auth } from "./lib/ApiClient";
 import MainPage from "./pages/main_page";
 import PublishPage from "./pages/publish_page";
+import EditPage from "./pages/edit_page";
 import PublishIssuePage from "./pages/publish_issue_page";
 import ArticlePage from "./pages/article_page";
 
@@ -41,7 +42,19 @@ function App() {
           {user && user.role === 0 && (
             <Route path="publish_issue" element={<PublishIssuePage />} />
           )}
-          <Route path="article/:id" element={<ArticlePage />} />
+          <Route
+            path="article/:id"
+            element={
+              <ArticlePage
+                Role={user && user.role === 0}
+                UserRole={user && user.role === 1}
+              />
+            }
+          />
+
+          {user && user.role === 0 && (
+            <Route path="article/edit/:id" element={<EditPage />} />
+          )}
         </Route>
       </Routes>
     </BrowserRouter>

@@ -12,6 +12,7 @@ export function LoginModal(props) {
 
   return (
     <Modal
+      style={{ zIndex: 999 }}
       isOpen={props.isOpen}
       hasOverlay
       onClickOutside={props.onClickOutside}

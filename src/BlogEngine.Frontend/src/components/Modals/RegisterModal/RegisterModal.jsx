@@ -20,6 +20,7 @@ export function RegisterModal(props) {
   files[0] && readBase64(files[0], (a) => setImage(a));
   return (
     <Modal
+      style={{ zIndex: 999 }}
       isOpen={props.isOpen}
       hasOverlay
       onClickOutside={props.onClickOutside}
