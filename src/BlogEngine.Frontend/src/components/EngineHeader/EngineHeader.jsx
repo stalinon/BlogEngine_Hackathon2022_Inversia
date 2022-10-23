@@ -260,6 +260,7 @@ export default function EngineHeader() {
                   onClick={() => setMenu(!menu)}
                 />
                 <ContextMenu
+                  style={{ zIndex: 999 }}
                   isOpen={menu}
                   offset="xs"
                   size="m"
